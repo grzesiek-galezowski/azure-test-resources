@@ -399,3 +399,6 @@ FodyWeavers.xsd
 src/AzureTestResourcesSpecification/.cr/personal/FavoritesList/List.xml
 src/AzureTestResourcesSpecification/AzureTestResourcesSpecification/AzureTestResourcesSpecification.v3.ncrunchproject
 src/AzureTestResourcesSpecification/AzureTestResourcesSpecification.v3.ncrunchsolution
+src/.cr/personal/FavoritesList/List.xml
+*.ncrunchsolution
+*.ncrunchproject

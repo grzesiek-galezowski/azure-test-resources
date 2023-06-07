@@ -17,8 +17,8 @@ public class CosmosTestDatabase : IAsyncDisposable
           is HttpStatusCode.ServiceUnavailable 
           or HttpStatusCode.InternalServerError)
       .WaitAndRetryAsync(10, 
-        retryAttempt => TimeSpan.FromSeconds(10), 
-        (exception, timeSpan, retryCount, context) =>
+        _ => TimeSpan.FromSeconds(10), 
+        (exception, _, retryCount, _) =>
       {
         Console.WriteLine($"Retry {retryCount} due to status code {((CosmosException)exception).StatusCode}");
       });
@@ -27,7 +27,8 @@ public class CosmosTestDatabase : IAsyncDisposable
 
   public static async Task DeleteAllDatabases()
   {
-    using var client = CosmosClientFactory.CreateCosmosClient(CosmosTestDatabaseConfig.Default());
+    using var client = CosmosClientFactory.CreateCosmosClient(
+      CosmosTestDatabaseConfig.Default());
 
     var databaseList = await GetDatabaseList(client);
 

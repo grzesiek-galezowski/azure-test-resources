@@ -10,7 +10,6 @@ public static class CosmosClientFactory
     var cosmosClient = new CosmosClientBuilder(
         obj.AccountEndpoint,
         obj.PrimaryKey)
-      //.WithBulkExecution(true)
       .WithThrottlingRetryOptions(
         maxRetryAttemptsOnThrottledRequests: obj.MaxRetryAttemptsOnThrottledRequests,
         maxRetryWaitTimeOnThrottledRequests: obj.MaxRetryWaitTimeOnThrottledRequests)

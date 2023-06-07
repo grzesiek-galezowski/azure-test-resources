@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureTestResourcesSpecification", "AzureTestResourcesSpecification\AzureTestResourcesSpecification.csproj", "{09DB626C-7E85-447A-8A2A-B0B4B92F48B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureTestResourcesSpecification", "AzureTestResourcesSpecification\AzureTestResourcesSpecification.csproj", "{09DB626C-7E85-447A-8A2A-B0B4B92F48B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureTestResources", "AzureTestResources\AzureTestResources.csproj", "{C693B0A6-1B39-4145-8762-62696EAF618F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{09DB626C-7E85-447A-8A2A-B0B4B92F48B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09DB626C-7E85-447A-8A2A-B0B4B92F48B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09DB626C-7E85-447A-8A2A-B0B4B92F48B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C693B0A6-1B39-4145-8762-62696EAF618F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C693B0A6-1B39-4145-8762-62696EAF618F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C693B0A6-1B39-4145-8762-62696EAF618F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C693B0A6-1B39-4145-8762-62696EAF618F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

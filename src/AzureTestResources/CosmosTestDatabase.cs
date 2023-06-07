@@ -1,9 +1,10 @@
 using System.Net;
+using System.Text.RegularExpressions;
 using Microsoft.Azure.Cosmos;
 using Polly;
 using Polly.Retry;
 
-namespace AzureTestResourcesSpecification;
+namespace AzureTestResources;
 
 public class CosmosTestDatabase : IAsyncDisposable
 {
@@ -27,19 +28,29 @@ public class CosmosTestDatabase : IAsyncDisposable
 
   public static async Task DeleteAllDatabases()
   {
+    var tolerance = TimeSpan.FromMinutes(2);
+    await DeleteAllDatabases(tolerance);
+  }
+
+  private static async Task DeleteAllDatabases(TimeSpan tolerance)
+  {
     using var client = CosmosClientFactory.CreateCosmosClient(
       CosmosTestDatabaseConfig.Default());
 
     var databaseList = await GetDatabaseList(client);
 
-    foreach (var databaseProperties in databaseList.Where(IsTooOldToBeFromTheCurrentRun))
+    foreach (var databaseProperties in databaseList
+               .Where(AdheresToNamingConvention)
+               .Where(properties => IsCreatedEarlierFromNowThan(
+                 tolerance,
+                 properties)))
     {
       try
       {
         var database = client.GetDatabase(databaseProperties.Id);
         await database.DeleteAsync();
       }
-      catch (CosmosException e) when(e.StatusCode == HttpStatusCode.NotFound)
+      catch (CosmosException e) when (e.StatusCode == HttpStatusCode.NotFound)
       {
         //silently ignore these databases
       }
@@ -138,8 +149,13 @@ public class CosmosTestDatabase : IAsyncDisposable
     return new DateTime(ticks, DateTimeKind.Utc);
   }
 
-  private static bool IsTooOldToBeFromTheCurrentRun(DatabaseProperties d)
+  private static bool IsCreatedEarlierFromNowThan(TimeSpan tolerance, DatabaseProperties d)
   {
-    return GetTimeOfCreationOf(d.Id) < DateTime.UtcNow - TimeSpan.FromMinutes(2);
+    return GetTimeOfCreationOf(d.Id) < DateTime.UtcNow - tolerance;
+  }
+
+  private static bool AdheresToNamingConvention(DatabaseProperties properties)
+  {
+    return Regex.Match(properties.Id, @"^[\w]+-\d+-\w{8}-\w{4}-\w{4}-\w{4}-\w{12}$").Success;
   }
 }

@@ -1,8 +1,10 @@
+using AzureTestResources;
+
 namespace AzureTestResourcesSpecification;
 
 public class UnitTest1
 {
-  private Lazy<Task> DeleteAllDatabases = new(CosmosTestDatabase.DeleteAllDatabases);
+  private readonly Lazy<Task> _deleteAllDatabases = new(CosmosTestDatabase.DeleteAllDatabases);
 
   [TestCase(1)]
   [TestCase(2)]
@@ -22,12 +24,9 @@ public class UnitTest1
   [TestCase(16)]
   public async Task Test1(int x)
   {
-    await DeleteAllDatabases.Value;
+    await _deleteAllDatabases.Value;
 
-    Console.WriteLine("1");
     await using var db = await CosmosTestDatabase.CreateDatabase();
-    Console.WriteLine("2");
     await db.CreateContainer(x.ToString(), "/id");
-    Console.WriteLine("3");
   }
 }

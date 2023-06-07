@@ -1,4 +1,4 @@
-namespace AzureTestResourcesSpecification;
+namespace AzureTestResources;
 
 public record CosmosTestDatabaseConfig(
   string NamePrefix,

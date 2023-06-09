@@ -1,10 +1,12 @@
 using AzureTestResources;
+using Extensions.Logging.NUnit;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace AzureTestResourcesSpecification;
 
 public class UnitTest1
 {
-  private readonly Lazy<Task> _deleteAllDatabases = new(CosmosTestDatabase.DeleteAllDatabases);
+  private readonly Lazy<Task> _deleteAllDatabases = new(CosmosTestDatabase.DeleteZombieDatabases);
 
   [TestCase(1)]
   [TestCase(2)]
@@ -22,11 +24,27 @@ public class UnitTest1
   [TestCase(14)]
   [TestCase(15)]
   [TestCase(16)]
+  [TestCase(21)]
+  [TestCase(22)]
+  [TestCase(23)]
+  [TestCase(24)]
+  [TestCase(25)]
+  [TestCase(26)]
+  [TestCase(27)]
+  [TestCase(28)]
+  [TestCase(29)]
+  [TestCase(30)]
+  [TestCase(31)]
+  [TestCase(32)]
+  [TestCase(33)]
+  [TestCase(34)]
+  [TestCase(35)]
+  [TestCase(36)]
   public async Task Test1(int x)
   {
     await _deleteAllDatabases.Value;
 
-    await using var db = await CosmosTestDatabase.CreateDatabase();
+    await using var db = await CosmosTestDatabase.CreateDatabase(new NUnitLogger("test"));
     await db.CreateContainer(x.ToString(), "/id");
   }
 }

@@ -1,6 +1,8 @@
+using System.Collections.Immutable;
 using System.Net;
 using System.Text.RegularExpressions;
 using Microsoft.Azure.Cosmos;
+using Microsoft.Extensions.Logging;
 using Polly;
 using Polly.Retry;
 
@@ -10,29 +12,57 @@ public class CosmosTestDatabase : IAsyncDisposable
 {
   private const string NameDelimiter = "_";
   private readonly Database _database;
+  private readonly ILogger _logger;
+  private readonly AsyncRetryPolicy _createResourcePolicy;
   private readonly CancellationToken _cancellationToken;
 
-  private static readonly AsyncRetryPolicy CreateResourceHandler =
-    Policy.Handle<CosmosException>(
-        e => e.StatusCode 
-          is HttpStatusCode.ServiceUnavailable 
-          or HttpStatusCode.InternalServerError)
-      .WaitAndRetryAsync(10, 
-        _ => TimeSpan.FromSeconds(10), 
-        (exception, _, retryCount, _) =>
-      {
-        Console.WriteLine($"Retry {retryCount} due to status code {((CosmosException)exception).StatusCode}");
-      });
-
-  private readonly List<Container> _containers = new();
-
-  public static async Task DeleteAllDatabases()
+  private static readonly IReadOnlyList<HttpStatusCode> CreateDatabaseRetryCodes = 
+    new List<HttpStatusCode>()
   {
-    var tolerance = TimeSpan.FromMinutes(2);
-    await DeleteAllDatabases(tolerance);
+    HttpStatusCode.ServiceUnavailable,
+    HttpStatusCode.InternalServerError,
+    HttpStatusCode.Conflict
+  }.ToImmutableArray();
+
+  private static readonly IReadOnlyList<HttpStatusCode> CreateContainerRetryCodes = 
+    new List<HttpStatusCode>()
+  {
+    HttpStatusCode.ServiceUnavailable,
+    HttpStatusCode.InternalServerError,
+  }.ToImmutableArray();
+
+
+  private static AsyncRetryPolicy CreateCreateDatabasePolicy(ILogger logger)
+  {
+    return CreateCreateResourcePolicy(logger, CreateDatabaseRetryCodes);
+  }
+  
+  private static AsyncRetryPolicy CreateCreateContainerPolicy(ILogger logger)
+  {
+    return CreateCreateResourcePolicy(logger, CreateContainerRetryCodes);
   }
 
-  private static async Task DeleteAllDatabases(TimeSpan tolerance)
+  private static AsyncRetryPolicy CreateCreateResourcePolicy(ILogger logger, IReadOnlyList<HttpStatusCode> createResourceRetryCodes)
+  {
+    return Policy.Handle<CosmosException>(
+        e => createResourceRetryCodes.Any(c => c == e.StatusCode))
+      .WaitAndRetryAsync(10,
+        _ => TimeSpan.FromSeconds(10),
+        (exception, _, retryCount, _) =>
+        {
+          logger.LogWarning($"Retry {retryCount} due to status code {((CosmosException)exception).StatusCode}");
+        });
+  }
+
+  private readonly List<Container> _containers = new();
+  private static readonly TimeSpan DefaultTolerance = TimeSpan.FromMinutes(2);
+
+  public static async Task DeleteZombieDatabases()
+  {
+    await DeleteZombieDatabases(DefaultTolerance);
+  }
+
+  private static async Task DeleteZombieDatabases(TimeSpan tolerance)
   {
     using var client = CosmosClientFactory.CreateCosmosClient(
       CosmosTestDatabaseConfig.Default());
@@ -47,6 +77,7 @@ public class CosmosTestDatabase : IAsyncDisposable
     {
       try
       {
+        //bug make this more efficient
         var database = client.GetDatabase(databaseProperties.Id);
         await database.DeleteAsync();
       }
@@ -73,56 +104,67 @@ public class CosmosTestDatabase : IAsyncDisposable
     return databases;
   }
 
-  public static async Task<CosmosTestDatabase> CreateDatabase()
+  public static async Task<CosmosTestDatabase> CreateDatabase(ILogger log)
   {
     var obj = CosmosTestDatabaseConfig.Default();
 
-    return await CreateDatabase(obj);
+    return await CreateDatabase(obj, log);
   }
 
-  public static async Task<CosmosTestDatabase> CreateDatabase(CosmosTestDatabaseConfig config)
+  public static async Task<CosmosTestDatabase> CreateDatabase(
+    CosmosTestDatabaseConfig config,
+    ILogger logger)
   {
     var client = CosmosClientFactory.CreateCosmosClient(config);
     var cancellationToken = new CancellationToken();
 
-    var databaseResponse = await CreateResourceHandler.ExecuteAsync(() =>
+    var databaseResponse = await CreateCreateDatabasePolicy(logger).ExecuteAsync(() =>
       client.CreateDatabaseAsync(
         GenerateDatabaseId(config.NamePrefix),
         cancellationToken: cancellationToken)
     );
 
-    return new CosmosTestDatabase(databaseResponse.Database, cancellationToken);
+    return new CosmosTestDatabase(
+      databaseResponse.Database, 
+      logger, 
+      CreateCreateContainerPolicy(logger),
+      cancellationToken);
   }
 
   public async ValueTask DisposeAsync()
   {
     foreach (var container in _containers)
     {
-      Console.WriteLine("Deleting container " + container.Id);
+      _logger.LogInformation($"Deleting container {container.Id}");
       await container.DeleteContainerAsync(cancellationToken: _cancellationToken);
     }
 
-    Console.WriteLine("Deleting database " + _database.Id);
+    _logger.LogInformation($"Deleting database {_database.Id}");
     await _database.DeleteAsync(cancellationToken: _cancellationToken);
   }
 
   public async Task CreateContainer(string containerName, string partitionKey)
   {
-    var containerResponse = await CreateResourceHandler.ExecuteAsync(() =>
+    var containerResponse = await _createResourcePolicy.ExecuteAsync(() =>
       _database.CreateContainerAsync(
         containerName,
-        partitionKey, cancellationToken: _cancellationToken)
+        partitionKey,
+        cancellationToken: _cancellationToken)
     );
     _containers.Add(containerResponse.Container);
   }
 
-  private CosmosTestDatabase(Database database, CancellationToken cancellationToken)
+  private CosmosTestDatabase(Database database,
+    ILogger logger,
+    AsyncRetryPolicy createResourcePolicy,
+    CancellationToken cancellationToken)
   {
     _database = database;
+    _logger = logger;
+    _createResourcePolicy = createResourcePolicy;
     _cancellationToken = cancellationToken;
   }
 
-  //bug remember to handle an exception saying database already exists
   private static string GenerateDatabaseId(string namePrefix)
   {
     var utcNow = DateTime.UtcNow;

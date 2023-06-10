@@ -1,12 +1,13 @@
 using AzureTestResources;
+using AzureTestResources.CosmosDb;
 using Extensions.Logging.NUnit;
-using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Azure.Cosmos;
 
 namespace AzureTestResourcesSpecification;
 
 public class UnitTest1
 {
-  private readonly Lazy<Task> _deleteAllDatabases = new(CosmosTestDatabase.DeleteZombieDatabases);
+  private readonly Lazy<Task> _deleteAllDatabases = new(ZombieDatabaseCleanup.DeleteZombieDatabases);
 
   [TestCase(1)]
   [TestCase(2)]
@@ -46,5 +47,13 @@ public class UnitTest1
 
     await using var db = await CosmosTestDatabase.CreateDatabase(new NUnitLogger("test"));
     await db.CreateContainer(x.ToString(), "/id");
+
+    using var cosmosClient = new CosmosClient(db.ConnectionString);
+    var container = cosmosClient.GetContainer(db.Id, x.ToString());
+    await container.CreateItemAsync(new
+    {
+      id = Guid.NewGuid().ToString(),
+      value = "lol"
+    });
   }
 }

@@ -15,7 +15,7 @@ public static class ZombieDatabaseCleanup
     private static async Task DeleteZombieDatabases(TimeSpan tolerance)
     {
         using var client = CosmosClientFactory.CreateCosmosClient(
-          CosmosTestDatabaseConfig.Default());
+          CosmosTestDatabaseConfig.Default()); //bug works only with an emulator
 
         var databaseList = await DatabaseInformation.GetDatabaseList(client);
 

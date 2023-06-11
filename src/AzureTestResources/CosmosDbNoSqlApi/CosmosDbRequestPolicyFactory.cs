@@ -5,11 +5,11 @@ using Microsoft.Extensions.Logging;
 using Polly;
 using Polly.Retry;
 
-namespace AzureTestResources.CosmosDb;
+namespace AzureTestResources.CosmosDbNoSqlApi;
 
-public static class ResourceRequestPolicyFactory
+public static class CosmosDbRequestPolicyFactory
 {
-    private static readonly IReadOnlyList<HttpStatusCode> CreateDatabaseRetryCodes =
+    private static readonly IReadOnlyList<HttpStatusCode> CreateResourceRetryCodes =
       new List<HttpStatusCode>
       {
       HttpStatusCode.ServiceUnavailable,
@@ -17,24 +17,24 @@ public static class ResourceRequestPolicyFactory
       HttpStatusCode.Conflict
       }.ToImmutableArray();
 
-    private static readonly IReadOnlyList<HttpStatusCode> CreateContainerRetryCodes =
+    private static readonly IReadOnlyList<HttpStatusCode> CreateSubResourceRetryCodes =
       new List<HttpStatusCode>
       {
       HttpStatusCode.ServiceUnavailable,
       HttpStatusCode.InternalServerError
       }.ToImmutableArray();
 
-    public static AsyncRetryPolicy CreateCreateDatabasePolicy(ILogger logger)
+    public static AsyncRetryPolicy CreateCreateResourcePolicy(ILogger logger)
     {
-        return CreateCreateResourcePolicy(logger, CreateDatabaseRetryCodes);
+        return CreateDefaultPolicy(logger, CreateResourceRetryCodes);
     }
 
-    public static AsyncRetryPolicy CreateCreateContainerPolicy(ILogger logger)
+    public static AsyncRetryPolicy CreateCreateSubResourcePolicy(ILogger logger)
     {
-        return CreateCreateResourcePolicy(logger, CreateContainerRetryCodes);
+        return CreateDefaultPolicy(logger, CreateSubResourceRetryCodes);
     }
 
-    private static AsyncRetryPolicy CreateCreateResourcePolicy(ILogger logger,
+    private static AsyncRetryPolicy CreateDefaultPolicy(ILogger logger,
       IReadOnlyList<HttpStatusCode> createResourceRetryCodes)
     {
         return Policy.Handle<CosmosException>(

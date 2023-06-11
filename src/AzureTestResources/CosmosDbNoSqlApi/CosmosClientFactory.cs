@@ -1,7 +1,7 @@
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Fluent;
 
-namespace AzureTestResources.CosmosDb;
+namespace AzureTestResources.CosmosDbNoSqlApi;
 
 public static class CosmosClientFactory
 {

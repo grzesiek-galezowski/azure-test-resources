@@ -1,4 +1,4 @@
-namespace AzureTestResources.CosmosDb;
+namespace AzureTestResources.CosmosDbNoSqlApi;
 
 public record CosmosTestDatabaseConfig(
   string NamePrefix,

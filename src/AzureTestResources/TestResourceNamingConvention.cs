@@ -1,9 +1,8 @@
 using System.Text.RegularExpressions;
-using Microsoft.Azure.Cosmos;
 
-namespace AzureTestResources.CosmosDb;
+namespace AzureTestResources;
 
-public static class TestDbNamingConvention
+public static class TestResourceNamingConvention
 {
     private const string NameDelimiter = "_";
 
@@ -16,14 +15,14 @@ public static class TestDbNamingConvention
     }
 
 
-    public static bool IsCreatedEarlierFromNowThan(TimeSpan tolerance, DatabaseProperties d)
+    public static bool IsCreatedEarlierFromNowThan(TimeSpan tolerance, string resourceId)
     {
-        return GetTimeOfCreationOf(d.Id) < DateTime.UtcNow - tolerance;
+        return GetTimeOfCreationOf(resourceId) < DateTime.UtcNow - tolerance;
     }
 
-    public static bool AdheresToNamingConvention(DatabaseProperties properties)
+    public static bool AdheresToNamingConvention(string resourceId)
     {
-        return Regex.Match(properties.Id, @"^[\w]+-\d+-\w{8}-\w{4}-\w{4}-\w{4}-\w{12}$").Success;
+        return Regex.Match(resourceId, @"^[\w]+-\d+-\w{8}-\w{4}-\w{4}-\w{4}-\w{12}$").Success;
     }
 
     private static void AssertCreationTimeCanBeParsedBackFrom(string dbName, DateTime utcNow)
@@ -37,9 +36,9 @@ public static class TestDbNamingConvention
         }
     }
 
-    private static DateTime GetTimeOfCreationOf(string dbName)
+    private static DateTime GetTimeOfCreationOf(string resourceName)
     {
-        var ticksString = dbName.Split(NameDelimiter)[^2];
+        var ticksString = resourceName.Split(NameDelimiter)[^2];
         var ticks = long.Parse(ticksString);
         return new DateTime(ticks, DateTimeKind.Utc);
     }

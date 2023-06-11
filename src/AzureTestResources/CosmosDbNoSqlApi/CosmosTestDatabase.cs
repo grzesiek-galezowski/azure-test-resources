@@ -2,7 +2,7 @@ using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
 using Polly.Retry;
 
-namespace AzureTestResources.CosmosDb;
+namespace AzureTestResources.CosmosDbNoSqlApi;
 
 public class CosmosTestDatabase : IAsyncDisposable
 {
@@ -56,15 +56,15 @@ public class CosmosTestDatabase : IAsyncDisposable
         var cancellationToken = new CancellationToken();
 
         var databaseResponse =
-          await ResourceRequestPolicyFactory.CreateCreateDatabasePolicy(logger).ExecuteAsync(() =>
-            client.CreateDatabaseAsync(TestDbNamingConvention.GenerateDatabaseId(config.NamePrefix),
+          await CosmosDbRequestPolicyFactory.CreateCreateResourcePolicy(logger).ExecuteAsync(() =>
+            client.CreateDatabaseAsync(TestResourceNamingConvention.GenerateDatabaseId(config.NamePrefix),
               cancellationToken: cancellationToken)
           );
 
         return new CosmosTestDatabase(
           databaseResponse.Database,
           logger,
-          ResourceRequestPolicyFactory.CreateCreateContainerPolicy(logger),
+          CosmosDbRequestPolicyFactory.CreateCreateSubResourcePolicy(logger),
           config.ConnectionString,
           cancellationToken);
     }

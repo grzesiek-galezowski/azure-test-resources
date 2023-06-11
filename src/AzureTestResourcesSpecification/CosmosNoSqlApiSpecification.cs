@@ -1,11 +1,10 @@
-using AzureTestResources;
-using AzureTestResources.CosmosDb;
+using AzureTestResources.CosmosDbNoSqlApi;
 using Extensions.Logging.NUnit;
 using Microsoft.Azure.Cosmos;
 
 namespace AzureTestResourcesSpecification;
 
-public class UnitTest1
+public class CosmosNoSqlApiSpecification
 {
   private readonly Lazy<Task> _deleteAllDatabases = new(ZombieDatabaseCleanup.DeleteZombieDatabases);
 

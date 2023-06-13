@@ -1,31 +1,34 @@
 using System.Net;
+using Azure;
 using Azure.Data.Tables;
-using AzureTestResources.CosmosDbNoSqlApi;
-using Microsoft.Azure.Cosmos;
 
 namespace AzureTestResources.CosmosDbTableApi;
 
 public static class ZombieTableCleanup //bug use in tests
 {
-    private static readonly TimeSpan DefaultTolerance = TimeSpan.FromMinutes(2);
+  private static readonly TimeSpan DefaultTolerance = TimeSpan.FromMinutes(1);
 
-    public static async Task DeleteZombieTables()
+  public static async Task DeleteZombieTables(CosmosTestTableConfig config)
+  {
+    await DeleteZombieTables(config, DefaultTolerance);
+  }
+
+  private static async Task DeleteZombieTables(CosmosTestTableConfig config, TimeSpan tolerance)
+  {
+    var client = new TableServiceClient(config.ConnectionString);
+    var tableItems = client.Query().Where(table => 
+      TestResourceNamingConvention.IsAZombieResource(tolerance, table.Name)).ToList();
+
+    await Task.WhenAll(tableItems.Select(async table =>
     {
-        await DeleteZombieTables(DefaultTolerance);
-    }
+      try
+      {
+        await client.GetTableClient(table.Name).DeleteAsync();
+      }
+      catch (RequestFailedException e) when (e.Status == (int)HttpStatusCode.NotFound)
+      {
 
-    private static async Task DeleteZombieTables(TimeSpan tolerance)
-    {
-        var client = new TableServiceClient(
-          CosmosTestDatabaseConfig.Default().ConnectionString); //bug works only with an emulator
-
-        foreach (var table in client.Query()
-                   .Where(table => TestResourceNamingConvention.AdheresToNamingConvention(table.Name))
-                   .Where(table => TestResourceNamingConvention.IsCreatedEarlierFromNowThan(
-                     tolerance, table.Name)))
-        {
-          //bug catch exception when table not found
-          await client.GetTableClient(table.Name).DeleteAsync();
-        }
-    }
+      }
+    }));
+  }
 }

@@ -1,11 +1,13 @@
-﻿using System.Security.Policy;
-using AzureTestResources.CosmosDbTableApi;
+﻿using AzureTestResources.CosmosDbTableApi;
 using Extensions.Logging.NUnit;
 
 namespace AzureTestResourcesSpecification;
 
 internal class CosmosTableApiSpecification
 {
+  private static Lazy<Task> CleanupZombieTablesOnce =
+    new(() => ZombieTableCleanup.DeleteZombieTables(CosmosTestTableConfig.Default()));
+
   [TestCase(1)]
   [TestCase(2)]
   [TestCase(3)]
@@ -40,15 +42,16 @@ internal class CosmosTableApiSpecification
   [TestCase(36)]
   public async Task ShouldWHAT(int testNo)
   {
+    await CleanupZombieTablesOnce.Value;
     //bug retry on generating the same name
     //bug too many resources?
     //bug cleanup zombie
 
     //GIVEN
     await using var config = await CosmosTestTable.Create(new NUnitLogger("table"));
-    
-    //WHEN
 
+    //WHEN
+    
     //THEN
   }
 }

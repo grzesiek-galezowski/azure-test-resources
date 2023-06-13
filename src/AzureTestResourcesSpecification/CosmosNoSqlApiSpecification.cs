@@ -40,7 +40,7 @@ public class CosmosNoSqlApiSpecification
   [TestCase(34)]
   [TestCase(35)]
   [TestCase(36)]
-  public async Task Test1(int x)
+  public async Task ShouldCreateTestDb(int x)
   {
     await _deleteAllDatabases.Value;
 

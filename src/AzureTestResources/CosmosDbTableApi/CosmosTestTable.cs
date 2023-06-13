@@ -5,15 +5,17 @@ namespace AzureTestResources.CosmosDbTableApi;
 
 public class CosmosTestTable : IAsyncDisposable
 {
-  private readonly string _tableId;
+  public string TableId { get; }
+  public string ConnectionString { get; }
   private readonly TableServiceClient _client;
   private readonly ILogger _logger;
 
-  private CosmosTestTable(string tableId, TableServiceClient client, ILogger logger)
+  private CosmosTestTable(string tableId, TableServiceClient client, string connectionString, ILogger logger)
   {
-    _tableId = tableId;
+    TableId = tableId;
     _client = client;
     _logger = logger;
+    ConnectionString = connectionString;
   }
 
   public static Task<CosmosTestTable> Create(ILogger logger) => Create(CosmosTestTableConfig.Default(), logger);
@@ -39,12 +41,12 @@ public class CosmosTestTable : IAsyncDisposable
 
         return table.Value;
       });
-    return new CosmosTestTable(table.Name, client, logger);
+    return new CosmosTestTable(table.Name, client, config.ConnectionString, logger);
   }
 
   public async ValueTask DisposeAsync()
   {
-    _logger.LogInformation("Deleting table " + _tableId);
-    await _client.DeleteTableAsync(_tableId);
+    _logger.LogInformation("Deleting table " + TableId);
+    await _client.DeleteTableAsync(TableId);
   }
 }

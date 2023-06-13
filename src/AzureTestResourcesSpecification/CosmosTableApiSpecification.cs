@@ -1,4 +1,6 @@
-﻿using AzureTestResources.CosmosDbTableApi;
+﻿using Azure;
+using Azure.Data.Tables;
+using AzureTestResources.CosmosDbTableApi;
 using Extensions.Logging.NUnit;
 
 namespace AzureTestResourcesSpecification;
@@ -40,7 +42,7 @@ internal class CosmosTableApiSpecification
   [TestCase(34)]
   [TestCase(35)]
   [TestCase(36)]
-  public async Task ShouldWHAT(int testNo)
+  public async Task ShouldCreateTestTable(int testNo)
   {
     await CleanupZombieTablesOnce.Value;
     //bug retry on generating the same name
@@ -48,10 +50,16 @@ internal class CosmosTableApiSpecification
     //bug cleanup zombie
 
     //GIVEN
-    await using var config = await CosmosTestTable.Create(new NUnitLogger("table"));
+    await using var table = await CosmosTestTable.Create(new NUnitLogger("table"));
 
     //WHEN
-    
+    var tableClient = new TableServiceClient(table.ConnectionString);
+    await tableClient.GetTableClient(table.TableId).AddEntityAsync(new TableEntity
+    {
+      PartitionKey = testNo.ToString(),
+      RowKey = "lol"
+    });
+
     //THEN
   }
 }

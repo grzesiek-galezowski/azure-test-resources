@@ -6,7 +6,7 @@ public static class TestResourceNamingConvention
 {
   private const string NameDelimiter = "_";
 
-  public static string GenerateDatabaseId(string namePrefix)
+  public static string GenerateResourceId(string namePrefix)
   {
     var utcNow = DateTime.UtcNow;
     var dbName = $"{namePrefix}{NameDelimiter}{utcNow.Ticks}{NameDelimiter}{Guid.NewGuid()}";

@@ -27,7 +27,7 @@ public class CosmosTestTable : IAsyncDisposable
     var table = await CosmosDbTableRequestPolicyFactory.CreateCreateResourcePolicy(logger).ExecuteAsync(
       async () =>
       {
-        var tableId = TestResourceNamingConvention.GenerateDatabaseId(config.NamePrefix);
+        var tableId = TestResourceNamingConvention.GenerateResourceId(config.NamePrefix);
         var table = await client.CreateTableAsync(tableId);
         if (!table.HasValue)
         {

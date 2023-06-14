@@ -39,8 +39,8 @@ public static class CosmosDbRequestPolicyFactory
   {
     return Policy.Handle<CosmosException>(
         e => createResourceRetryCodes.Any(c => c == e.StatusCode))
-      .WaitAndRetryAsync(5,
-        _ => TimeSpan.FromSeconds(10),
+      .WaitAndRetryAsync(10,
+        _ => TimeSpan.FromSeconds(5),
         (exception, _, retryCount, _) =>
         {
           logger.LogWarning($"Retry {retryCount} due to status code {((CosmosException)exception).StatusCode}");

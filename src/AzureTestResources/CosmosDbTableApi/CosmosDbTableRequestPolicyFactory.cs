@@ -27,8 +27,8 @@ public static class CosmosDbTableRequestPolicyFactory
   {
     return Policy.Handle<RequestFailedException>(
         e => createResourceRetryCodes.Any(c => (int)c == e.Status))
-      .WaitAndRetryAsync(5,
-        _ => TimeSpan.FromSeconds(10),
+      .WaitAndRetryAsync(10,
+        _ => TimeSpan.FromSeconds(5),
         (exception, _, retryCount, _) =>
         {
           logger.LogWarning(

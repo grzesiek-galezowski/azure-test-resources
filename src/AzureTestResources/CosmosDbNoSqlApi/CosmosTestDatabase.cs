@@ -57,7 +57,7 @@ public class CosmosTestDatabase : IAsyncDisposable
 
     var databaseResponse =
       await CosmosDbRequestPolicyFactory.CreateCreateResourcePolicy(logger).ExecuteAsync(() =>
-        client.CreateDatabaseAsync(TestResourceNamingConvention.GenerateDatabaseId(config.NamePrefix),
+        client.CreateDatabaseAsync(TestResourceNamingConvention.GenerateResourceId(config.NamePrefix),
           cancellationToken: cancellationToken)
       );
 

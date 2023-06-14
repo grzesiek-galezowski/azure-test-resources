@@ -4,7 +4,7 @@ using Extensions.Logging.NUnit;
 
 namespace AzureTestResourcesSpecification;
 
-public class AzureServiceBusTopicsSpecification
+public class AzureServiceBusQueuesSpecification
 {
   [TestCase(1)]
   [TestCase(2)]
@@ -38,25 +38,23 @@ public class AzureServiceBusTopicsSpecification
   [TestCase(34)]
   [TestCase(35)]
   [TestCase(36)]
-  public async Task ShouldCreateAzureServiceBusTopic(int testNo)
+  public async Task ShouldCreateAzureServiceBusQueue(int testNo)
   {
     //GIVEN
     var ct = new CancellationToken();
 
-    await using var topic = await ServiceBusTestResources.CreateTopic(
+    await using var queue = await ServiceBusTestResources.CreateQueue(
       await File.ReadAllTextAsync("C:\\Users\\HYPERBOOK\\.secrets\\service-bus-connection-string.txt", ct),
-      "test-topic",
+      "test-queue",
       new NUnitLogger("servicebus"),
       ct);
 
-    await topic.CreateSubscription("MyMessages");
+    var client = new ServiceBusClient(queue.ConnectionString);
 
-    var client = new ServiceBusClient(topic.ConnectionString);
-
-    var serviceBusSender = client.CreateSender(topic.Name);
+    var serviceBusSender = client.CreateSender(queue.Name);
     await serviceBusSender.SendMessageAsync(new ServiceBusMessage("lol"), ct);
 
-    var receiver = client.CreateReceiver(topic.Name, "MyMessages");
+    var receiver = client.CreateReceiver(queue.Name);
     var receivedMessage = await receiver.ReceiveMessageAsync(cancellationToken: ct);
 
     Assert.AreEqual("lol", receivedMessage.Body.ToString());

@@ -1,5 +1,5 @@
 ﻿using Azure.Messaging.ServiceBus;
-using AzureTestResources.AzureServiceBusTopics;
+using AzureTestResources.AzureServiceBus;
 using Extensions.Logging.NUnit;
 
 namespace AzureTestResourcesSpecification;
@@ -45,7 +45,7 @@ public class AzureServiceBusQueuesSpecification
 
     await using var queue = await ServiceBusTestResources.CreateQueue(
       await File.ReadAllTextAsync("C:\\Users\\HYPERBOOK\\.secrets\\service-bus-connection-string.txt", ct),
-      "test-queue",
+      "testqueue",
       new NUnitLogger("servicebus"),
       ct);
 

@@ -2,7 +2,7 @@ using Azure;
 using Azure.Messaging.ServiceBus.Administration;
 using Microsoft.Extensions.Logging;
 
-namespace AzureTestResources.AzureServiceBusTopics;
+namespace AzureTestResources.AzureServiceBus;
 
 public static class ServiceBusTestResources
 {

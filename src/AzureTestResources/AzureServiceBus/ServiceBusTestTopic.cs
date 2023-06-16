@@ -1,6 +1,6 @@
 ﻿using Azure.Messaging.ServiceBus.Administration;
 
-namespace AzureTestResources.AzureServiceBusTopics;
+namespace AzureTestResources.AzureServiceBus;
 
 public class ServiceBusTestTopic : IAsyncDisposable
 {

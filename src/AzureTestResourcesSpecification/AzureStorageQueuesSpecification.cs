@@ -1,7 +1,5 @@
-﻿using Azure.Messaging.ServiceBus;
-using Azure.Storage.Queues;
-using AzureTestResources.AzureServiceBusTopics;
-using Extensions.Logging.NUnit;
+﻿using Azure.Storage.Queues;
+using AzureTestResources.AzureStorage;
 
 namespace AzureTestResourcesSpecification;
 
@@ -39,15 +37,17 @@ public class AzureStorageQueuesSpecification
   [TestCase(34)]
   [TestCase(35)]
   [TestCase(36)]
-  public async Task ShouldCreateAzureServiceBusQueue(int testNo)
+  public async Task ShouldCreateAzureStorageQueue(int testNo)
   {
-    var ct = new CancellationToken();
-    var client = new QueueClient(
-      "DefaultEndpointsProtocol=https;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;QueueEndpoint=http://127.0.0.1:10001/devstoreaccount1;", "queue-name" + testNo
-    );    
-    // Create the queue if it doesn't already exist
-    await client.CreateAsync(cancellationToken: ct);
+    var messageText = "lol";
+    await using var queue = await AzureStorageResources.CreateQueue(new CancellationToken());
+    var queueClient = new QueueClient(queue.ConnectionString, queue.Name);
+    await queueClient.SendMessageAsync(messageText);
 
-    await client.DeleteAsync(ct);
+    var message = await queueClient.ReceiveMessageAsync();
+    Assert.AreEqual(messageText, message.Value.MessageText);
+
+    //bug connection string, queue name
+    //bug zombie removal
   }
 }

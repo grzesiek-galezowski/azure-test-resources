@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using Polly;
 using Polly.Retry;
 
-namespace AzureTestResources.AzureServiceBusTopics;
+namespace AzureTestResources.AzureServiceBus;
 
 public static class AzureServiceBusRequestPolicyFactory
 {

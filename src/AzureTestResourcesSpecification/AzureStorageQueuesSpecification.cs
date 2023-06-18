@@ -1,5 +1,6 @@
 ﻿using Azure.Storage.Queues;
 using AzureTestResources.AzureStorage;
+using Extensions.Logging.NUnit;
 
 namespace AzureTestResourcesSpecification;
 
@@ -40,7 +41,8 @@ public class AzureStorageQueuesSpecification
   public async Task ShouldCreateAzureStorageQueue(int testNo)
   {
     var messageText = "lol";
-    await using var queue = await AzureStorageResources.CreateQueue(new CancellationToken());
+    await using var queue = await AzureStorageResources.CreateQueue(
+      new NUnitLogger("storagequeue"), new CancellationToken());
     var queueClient = new QueueClient(queue.ConnectionString, queue.Name);
     await queueClient.SendMessageAsync(messageText);
 

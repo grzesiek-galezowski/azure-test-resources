@@ -1,17 +1,17 @@
-﻿using Azure.Storage.Queues;
+﻿using Azure.Storage.Blobs;
 
 namespace AzureTestResources.AzureStorage;
 
-public class StorageTestQueue : IAsyncDisposable
+public class StorageTestBlobContainer : IAsyncDisposable
 {
-  private readonly QueueServiceClient _client;
+  private readonly BlobContainerClient _client;
   private readonly CancellationToken _ct;
   
   public string ConnectionString { get; }
   public string Name { get; }
 
-  public StorageTestQueue(
-    QueueServiceClient client,
+  public StorageTestBlobContainer(
+    BlobContainerClient client,
     string name,
     CancellationToken ct,
     string connectionString)
@@ -24,6 +24,6 @@ public class StorageTestQueue : IAsyncDisposable
 
   public async ValueTask DisposeAsync()
   {
-    await _client.DeleteQueueAsync(Name, _ct);
+    await _client.DeleteAsync(cancellationToken: _ct);
   }
 }

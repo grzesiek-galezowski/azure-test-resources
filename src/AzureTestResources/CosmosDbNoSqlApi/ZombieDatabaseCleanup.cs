@@ -24,6 +24,7 @@ public static class ZombieDatabaseCleanup
       try
       {
         //bug make this more efficient?
+        //bug delete containers first?
         var database = client.GetDatabase(databaseProperties.Id);
         await database.DeleteAsync();
       }

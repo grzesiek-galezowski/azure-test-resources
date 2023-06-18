@@ -1,4 +1,6 @@
-﻿using Azure.Data.Tables;
+﻿using Azure;
+using Azure.Data.Tables;
+using Azure.Data.Tables.Models;
 using Microsoft.Extensions.Logging;
 
 namespace AzureTestResources.CosmosDbTableApi;
@@ -29,19 +31,24 @@ public class CosmosTestTable : IAsyncDisposable
       {
         var tableId = TestResourceNamingConvention.GenerateResourceId(config.NamePrefix);
         var table = await client.CreateTableAsync(tableId);
-        if (!table.HasValue)
-        {
-          throw new InvalidOperationException("Could not create a table " + tableId);
-        }
-
-        if (tableId != table.Value.Name)
-        {
-          throw new InvalidOperationException("Naming mismatch");
-        }
+        AssertValidResponse(table, tableId);
 
         return table.Value;
       });
     return new CosmosTestTable(table.Name, client, config.ConnectionString, logger);
+  }
+
+  private static void AssertValidResponse(Response<TableItem> table, string tableId)
+  {
+    if (!table.HasValue)
+    {
+      throw new InvalidOperationException("Could not create a table " + tableId);
+    }
+
+    if (tableId != table.Value.Name)
+    {
+      throw new InvalidOperationException("Naming mismatch");
+    }
   }
 
   public async ValueTask DisposeAsync()

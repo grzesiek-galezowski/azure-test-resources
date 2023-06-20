@@ -2,6 +2,6 @@
 
 public interface IAzureResourceApi : IAsyncDisposable
 {
-    string ConnectionString { get; }
-    string Name { get; }
+  string ConnectionString { get; }
+  string Name { get; }
 }

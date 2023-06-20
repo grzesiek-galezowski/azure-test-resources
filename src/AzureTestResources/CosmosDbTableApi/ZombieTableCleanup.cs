@@ -16,7 +16,7 @@ public static class ZombieTableCleanup //bug use in tests
   private static async Task DeleteZombieTables(CosmosTestTableConfig config, TimeSpan tolerance)
   {
     var client = new TableServiceClient(config.ConnectionString);
-    var tableItems = client.Query().Where(table => 
+    var tableItems = client.Query().Where(table =>
       TestResourceNamingConvention.IsAZombieResource(tolerance, table.Name)).ToList();
 
     await Task.WhenAll(tableItems.Select(async table =>

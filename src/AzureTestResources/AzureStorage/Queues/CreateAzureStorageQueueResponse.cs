@@ -7,50 +7,50 @@ namespace AzureTestResources.AzureStorage.Queues;
 
 public class CreateAzureStorageQueueResponse : ICreateAzureResourceResponse<StorageTestQueue>
 {
-    private readonly Response<QueueClient> _response; //bug
-    private readonly string _resourceName;
-    private readonly QueueServiceClient _client;
-    private readonly string _connectionString;
-    private readonly CancellationToken _cancellationToken;
+  private readonly Response<QueueClient> _response; //bug
+  private readonly string _resourceName;
+  private readonly QueueServiceClient _client;
+  private readonly string _connectionString;
+  private readonly CancellationToken _cancellationToken;
 
-    public CreateAzureStorageQueueResponse(
-      Response<QueueClient> response,
-      string resourceName,
-      QueueServiceClient client,
-      string connectionString, 
-      CancellationToken cancellationToken)
-    {
-        _response = response;
-        _resourceName = resourceName;
-        _client = client;
-        _connectionString = connectionString;
-        _cancellationToken = cancellationToken;
-    }
+  public CreateAzureStorageQueueResponse(
+    Response<QueueClient> response,
+    string resourceName,
+    QueueServiceClient client,
+    string connectionString,
+    CancellationToken cancellationToken)
+  {
+    _response = response;
+    _resourceName = resourceName;
+    _client = client;
+    _connectionString = connectionString;
+    _cancellationToken = cancellationToken;
+  }
 
-    public void AssertValidResponse()
-    {
-      var resourceType = "queue";
-      Assertions.AssertNotNull(_response, resourceType, _resourceName);
-      Assertions.AssertNamesMatch(_resourceName, _response.Value.Name);
-      Assertions.AssertIsHttpCreated(_response, resourceType);
-    }
+  public void AssertValidResponse()
+  {
+    var resourceType = "queue";
+    Assertions.AssertNotNull(_response, resourceType, _resourceName);
+    Assertions.AssertNamesMatch(_resourceName, _response.Value.Name);
+    Assertions.AssertIsHttpCreated(_response, resourceType);
+  }
 
-    public bool ShouldBeRetried()
-    {
-        return _response.GetRawResponse().Status == (int)HttpStatusCode.NoContent;
-    }
+  public bool ShouldBeRetried()
+  {
+    return _response.GetRawResponse().Status == (int)HttpStatusCode.NoContent;
+  }
 
-    public string GetReasonForRetry()
-    {
-        return $"status code {_response.GetRawResponse().Status} and error {_response.GetRawResponse().ReasonPhrase}";
-    }
+  public string GetReasonForRetry()
+  {
+    return $"status code {_response.GetRawResponse().Status} and error {_response.GetRawResponse().ReasonPhrase}";
+  }
 
-    public StorageTestQueue CreateResourceApi()
-    {
-        return new StorageTestQueue(
-          _client, 
-          _response.Value.Name,
-          _connectionString, 
-          _cancellationToken);
-    }
+  public StorageTestQueue CreateResourceApi()
+  {
+    return new StorageTestQueue(
+      _client,
+      _response.Value.Name,
+      _connectionString,
+      _cancellationToken);
+  }
 }

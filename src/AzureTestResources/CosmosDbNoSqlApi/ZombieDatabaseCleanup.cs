@@ -18,7 +18,7 @@ public static class ZombieDatabaseCleanup
 
     var databaseList = await DatabaseInformation.GetDatabaseList(client);
 
-    foreach (var databaseProperties in databaseList.Where(properties => 
+    foreach (var databaseProperties in databaseList.Where(properties =>
                TestResourceNamingConvention.IsAZombieResource(tolerance, properties.Id)))
     {
       try

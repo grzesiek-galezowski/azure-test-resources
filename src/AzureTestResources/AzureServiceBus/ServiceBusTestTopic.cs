@@ -27,7 +27,7 @@ public class ServiceBusTestTopic : IAsyncDisposable
       _topicName,
       cancellationToken: _cancellationToken,
       subscriptionName: name);
-    
+
     if (!response.HasValue)
     {
       throw new InvalidOperationException("Could not create a subscription " + name);

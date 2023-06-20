@@ -9,7 +9,7 @@ public static class ServiceBusTestResources
   private static readonly TimeSpan AutoDeleteOnIdle = TimeSpan.FromMinutes(5);
 
   public static async Task<ServiceBusTestTopic> CreateTopic(
-    string connectionString, 
+    string connectionString,
     string namePrefix,
     ILogger logger,
     CancellationToken cancellationToken)
@@ -32,14 +32,14 @@ public static class ServiceBusTestResources
       });
 
     return new ServiceBusTestTopic(
-      serviceBusClient, 
-      response.Value.Name, 
+      serviceBusClient,
+      response.Value.Name,
       connectionString,
       cancellationToken);
   }
 
   public static async Task<ServiceBusTestQueue> CreateQueue(
-    string connectionString, 
+    string connectionString,
     string namePrefix,
     ILogger logger,
     CancellationToken cancellationToken)
@@ -62,8 +62,8 @@ public static class ServiceBusTestResources
       });
 
     return new ServiceBusTestQueue(
-      serviceBusClient, 
-      response.Value.Name, 
+      serviceBusClient,
+      response.Value.Name,
       connectionString,
       cancellationToken);
   }

@@ -28,7 +28,7 @@ public static class TestResourceNamingConvention
 
   public static bool AdheresToNamingConvention(string resourceId)
   {
-    return Regex.Match(resourceId, 
+    return Regex.Match(resourceId,
       $@"^[^{NameDelimiter}]+{NameDelimiter}\d+{NameDelimiter}\w{{8}}\w{{4}}\w{{4}}\w{{4}}\w{{12}}$").Success;
   }
 

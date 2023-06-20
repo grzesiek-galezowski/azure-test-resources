@@ -9,7 +9,7 @@ static internal class Assertions
   {
     if (response.GetRawResponse().Status != (int)HttpStatusCode.Created)
     {
-      throw new InvalidOperationException("Expected the status code to be 201 Created, but "+ resourceType + " already exists");
+      throw new InvalidOperationException("Expected the status code to be 201 Created, but " + resourceType + " already exists");
     }
   }
 

@@ -1,7 +1,10 @@
-using System.Net;
-using Azure;
+using Azure.Storage.Blobs;
 using Azure.Storage.Queues;
+using AzureTestResources.AzureStorage.Blobs;
+using AzureTestResources.AzureStorage.Common;
+using AzureTestResources.AzureStorage.Queues;
 using Microsoft.Extensions.Logging;
+using Polly;
 
 namespace AzureTestResources.AzureStorage;
 
@@ -18,43 +21,43 @@ public static class AzureStorageResources
       cancellationToken);
   }
 
-  private static async Task<StorageTestQueue> CreateQueue(
+  public static async Task<StorageTestQueue> CreateQueue(
     string connectionString,
     ILogger logger,
     CancellationToken ct)
   {
-
-    var client = new QueueServiceClient(
+    var service = new AzureStorageQueueService(
+      new QueueServiceClient(
       connectionString
-    );
+    ), connectionString, ct);
 
-    var response = await AzureStorageRequestPolicyFactory.CreateCreateResourcePolicy(logger)
-      .ExecuteAsync(async () =>
-      {
-        var resourceId = TestResourceNamingConvention.GenerateResourceId(
-          "q" /* see https://learn.microsoft.com/en-us/rest/api/storageservices/naming-queues-and-metadata#queue-names */);
-        var response = await client.CreateQueueAsync(resourceId, cancellationToken: ct);
-        AssertValidResponse(response, resourceId);
-        return response;
-      });
-    return new StorageTestQueue(client, response.Value.Name, ct, connectionString);
+    return await AzureResources.CreateApiToUnderlyingResource(service, logger);
   }
 
-  private static void AssertValidResponse(Response<QueueClient> response, string resourceName)
+  public static async Task<StorageTestBlobContainer> CreateBlobContainer(ILogger logger, CancellationToken cancellationToken)
   {
-    if (!response.HasValue)
-    {
-      throw new InvalidOperationException("Could not create a subscription " + resourceName);
-    }
-
-    if (resourceName != response.Value.Name)
-    {
-      throw new InvalidOperationException("Naming mismatch");
-    }
-
-    if(response.GetRawResponse().Status != (int)HttpStatusCode.Created)
-    {
-      throw new InvalidOperationException("Queue already exists");
-    }
+    return await CreateBlobContainer(
+      //bug correct connection string
+      "DefaultEndpointsProtocol=https;" +
+      "AccountName=devstoreaccount1;" +
+      "AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;" +
+      "QueueEndpoint=http://127.0.0.1:10001/devstoreaccount1;", 
+      logger, 
+      cancellationToken);
   }
-}//bug zombie cleanup
+
+  public static async Task<StorageTestBlobContainer> CreateBlobContainer(
+    string connectionString,
+    ILogger logger,
+    CancellationToken ct)
+  {
+    var service = new AzureStorageBlobService(
+      new BlobServiceClient(
+        connectionString
+      ), connectionString, ct);
+
+    return await AzureResources.CreateApiToUnderlyingResource(service, logger);
+  }
+}
+
+//bug zombie cleanup (for all resources)

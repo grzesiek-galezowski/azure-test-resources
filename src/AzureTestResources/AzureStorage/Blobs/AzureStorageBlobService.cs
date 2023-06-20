@@ -21,9 +21,8 @@ public class AzureStorageBlobService : IAzureService<StorageTestBlobContainer>
   {
     try
     {
-      //var resourceId = TestResourceNamingConvention.GenerateResourceId(
-      //  "b" /* see https://learn.microsoft.com/en-us/rest/api/storageservices/naming-and-referencing-containers--blobs--and-metadata#resource-names */);
-      var resourceId = "abc123"; //bug
+      var resourceId = TestResourceNamingConvention.GenerateResourceId(
+        "b" /* see https://learn.microsoft.com/en-us/rest/api/storageservices/naming-and-referencing-containers--blobs--and-metadata#resource-names */);
       var response = new CreateAzureStorageBlobContainerResponse(
         await _client.CreateBlobContainerAsync(resourceId, cancellationToken: _cancellationToken),
         resourceId,

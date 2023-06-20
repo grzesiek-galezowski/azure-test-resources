@@ -19,9 +19,8 @@ public class AzureStorageQueueService : IAzureService<StorageTestQueue>
 
   public async Task<ICreateAzureResourceResponse<StorageTestQueue>> CreateResourceInstance()
   {
-    //var resourceId = TestResourceNamingConvention.GenerateResourceId(
-    //  "q" /* see https://learn.microsoft.com/en-us/rest/api/storageservices/naming-queues-and-metadata#queue-names */);
-    var resourceId = "q12345";
+    var resourceId = TestResourceNamingConvention.GenerateResourceId(
+      "q" /* see https://learn.microsoft.com/en-us/rest/api/storageservices/naming-queues-and-metadata#queue-names */);
     var response = new CreateAzureStorageQueueResponse(
       await _client.CreateQueueAsync(resourceId, cancellationToken: _cancellationToken),
       resourceId,

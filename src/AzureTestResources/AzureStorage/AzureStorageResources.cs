@@ -10,15 +10,16 @@ namespace AzureTestResources.AzureStorage;
 
 public static class AzureStorageResources
 {
+  private const string CommonConnectionString = "DefaultEndpointsProtocol=http;" +
+                                                "AccountName=devstoreaccount1;" +
+                                                "AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;" +
+                                                "BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1;" +
+                                                "QueueEndpoint=http://127.0.0.1:10001/devstoreaccount1;" +
+                                                "TableEndpoint=http://127.0.0.1:10002/devstoreaccount1;";
+
   public static async Task<StorageTestQueue> CreateQueue(ILogger logger, CancellationToken cancellationToken)
   {
-    return await CreateQueue(
-      "DefaultEndpointsProtocol=https;" +
-      "AccountName=devstoreaccount1;" +
-      "AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;" +
-      "QueueEndpoint=http://127.0.0.1:10001/devstoreaccount1;", 
-      logger, 
-      cancellationToken);
+    return await CreateQueue(CommonConnectionString, logger, cancellationToken);
   }
 
   public static async Task<StorageTestQueue> CreateQueue(
@@ -36,14 +37,7 @@ public static class AzureStorageResources
 
   public static async Task<StorageTestBlobContainer> CreateBlobContainer(ILogger logger, CancellationToken cancellationToken)
   {
-    return await CreateBlobContainer(
-      //bug correct connection string
-      "DefaultEndpointsProtocol=https;" +
-      "AccountName=devstoreaccount1;" +
-      "AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;" +
-      "QueueEndpoint=http://127.0.0.1:10001/devstoreaccount1;", 
-      logger, 
-      cancellationToken);
+    return await CreateBlobContainer(CommonConnectionString, logger, cancellationToken);
   }
 
   public static async Task<StorageTestBlobContainer> CreateBlobContainer(

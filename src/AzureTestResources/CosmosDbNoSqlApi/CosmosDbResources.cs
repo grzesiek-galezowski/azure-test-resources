@@ -1,4 +1,5 @@
 using AzureTestResources.AzureStorage.Common;
+using AzureTestResources.CosmosDbNoSqlApi.ImplementationDetails;
 using Microsoft.Extensions.Logging;
 
 namespace AzureTestResources.CosmosDbNoSqlApi;

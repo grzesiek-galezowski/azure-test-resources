@@ -48,7 +48,7 @@ public class CosmosNoSqlApiSpecification
     await db.CreateContainer(x.ToString(), "/id");
 
     using var cosmosClient = new CosmosClient(db.ConnectionString);
-    var container = cosmosClient.GetContainer(db.Id, x.ToString());
+    var container = cosmosClient.GetContainer(db.Name, x.ToString());
     await container.CreateItemAsync(new
     {
       id = Guid.NewGuid().ToString(),

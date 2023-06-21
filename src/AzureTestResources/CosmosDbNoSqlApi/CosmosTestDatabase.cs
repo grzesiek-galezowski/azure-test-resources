@@ -1,10 +1,11 @@
+using AzureTestResources.AzureStorage.Common;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
 using Polly.Retry;
 
 namespace AzureTestResources.CosmosDbNoSqlApi;
 
-public class CosmosTestDatabase : IAsyncDisposable
+public class CosmosTestDatabase : IAzureResourceApi
 {
   private readonly CancellationToken _cancellationToken;
   private readonly List<Container> _containers = new();
@@ -23,11 +24,11 @@ public class CosmosTestDatabase : IAsyncDisposable
     _createResourcePolicy = createResourcePolicy;
     _cancellationToken = cancellationToken;
     ConnectionString = connectionString;
-    Id = _database.Id;
+    Name = _database.Id;
   }
 
   public string ConnectionString { get; }
-  public string Id { get; private set; }
+  public string Name { get; }
 
   public async ValueTask DisposeAsync()
   {
@@ -43,6 +44,7 @@ public class CosmosTestDatabase : IAsyncDisposable
 
   public async Task CreateContainer(string containerName, string partitionKey)
   {
+    //bug handle this using the generic mechanism?
     var containerResponse = await _createResourcePolicy.ExecuteAsync(() =>
       _database.CreateContainerAsync(
         containerName,

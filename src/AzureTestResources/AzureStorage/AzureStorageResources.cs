@@ -8,7 +8,7 @@ using Polly;
 
 namespace AzureTestResources.AzureStorage;
 
-public static class AzureStorageResources
+public static partial class AzureStorageResources
 {
   private const string CommonConnectionString = "DefaultEndpointsProtocol=http;" +
                                                 "AccountName=devstoreaccount1;" +
@@ -16,6 +16,10 @@ public static class AzureStorageResources
                                                 "BlobEndpoint=http://127.0.0.1:10000/devstoreaccount1;" +
                                                 "QueueEndpoint=http://127.0.0.1:10001/devstoreaccount1;" +
                                                 "TableEndpoint=http://127.0.0.1:10002/devstoreaccount1;";
+}
+
+public static partial class AzureStorageResources
+{
 
   public static async Task<StorageTestQueue> CreateQueue(ILogger logger, CancellationToken cancellationToken)
   {
@@ -29,12 +33,15 @@ public static class AzureStorageResources
   {
     var service = new AzureStorageQueueService(
       new QueueServiceClient(
-      connectionString
-    ), connectionString, ct);
+        connectionString
+      ), connectionString, ct);
 
     return await AzureResources.CreateApiToUnderlyingResource(service, logger);
   }
+}
 
+public static partial class AzureStorageResources
+{
   public static async Task<StorageTestBlobContainer> CreateBlobContainer(ILogger logger, CancellationToken cancellationToken)
   {
     return await CreateBlobContainer(CommonConnectionString, logger, cancellationToken);

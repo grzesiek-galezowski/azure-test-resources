@@ -9,7 +9,9 @@ public class AzureStorageQueueService : IAzureService<StorageTestQueue>
   private readonly string _connectionString;
   private readonly CancellationToken _cancellationToken;
 
-  public AzureStorageQueueService(QueueServiceClient client, string connectionString,
+  public AzureStorageQueueService(
+    QueueServiceClient client, 
+    string connectionString,
     CancellationToken cancellationToken)
   {
     _client = client;

@@ -44,7 +44,7 @@ public class CosmosNoSqlApiSpecification
   {
     await _deleteAllDatabases.Value;
 
-    await using var db = await CosmosTestDatabase.CreateDatabase(new NUnitLogger("test"));
+    await using var db = await CosmosDbResources.CreateDatabase(new NUnitLogger("test"));
     await db.CreateContainer(x.ToString(), "/id");
 
     using var cosmosClient = new CosmosClient(db.ConnectionString);

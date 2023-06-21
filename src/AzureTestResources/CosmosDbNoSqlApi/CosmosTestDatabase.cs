@@ -12,7 +12,7 @@ public class CosmosTestDatabase : IAsyncDisposable
   private readonly Database _database;
   private readonly ILogger _logger;
 
-  private CosmosTestDatabase(Database database,
+  public CosmosTestDatabase(Database database,
     ILogger logger,
     AsyncRetryPolicy createResourcePolicy,
     string connectionString,
@@ -39,34 +39,6 @@ public class CosmosTestDatabase : IAsyncDisposable
 
     _logger.LogInformation($"Deleting database {_database.Id}");
     await _database.DeleteAsync(cancellationToken: _cancellationToken);
-  }
-
-  public static async Task<CosmosTestDatabase> CreateDatabase(ILogger log)
-  {
-    var config = CosmosTestDatabaseConfig.Default();
-
-    return await CreateDatabase(config, log);
-  }
-
-  public static async Task<CosmosTestDatabase> CreateDatabase(
-    CosmosTestDatabaseConfig config,
-    ILogger logger)
-  {
-    var client = CosmosClientFactory.CreateCosmosClient(config);
-    var cancellationToken = new CancellationToken();
-
-    var databaseResponse =
-      await CosmosDbRequestPolicyFactory.CreateCreateResourcePolicy(logger).ExecuteAsync(() =>
-        client.CreateDatabaseAsync(TestResourceNamingConvention.GenerateResourceId(config.NamePrefix),
-          cancellationToken: cancellationToken)
-      );
-
-    return new CosmosTestDatabase(
-      databaseResponse.Database,
-      logger,
-      CosmosDbRequestPolicyFactory.CreateCreateSubResourcePolicy(logger),
-      config.ConnectionString,
-      cancellationToken);
   }
 
   public async Task CreateContainer(string containerName, string partitionKey)

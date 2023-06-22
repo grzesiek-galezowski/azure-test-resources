@@ -46,11 +46,11 @@ internal class CosmosTableApiSpecification
     await CleanupZombieTablesOnce.Value;
 
     //GIVEN
-    await using var table = await CosmosTestTable.Create(new NUnitLogger("table"));
+    await using var table = await CosmosDbTableResources.CreateTable(new NUnitLogger("table"));
 
     //WHEN
     var tableClient = new TableServiceClient(table.ConnectionString);
-    await tableClient.GetTableClient(table.TableId).AddEntityAsync(new TableEntity
+    await tableClient.GetTableClient(table.Name).AddEntityAsync(new TableEntity
     {
       PartitionKey = testNo.ToString(),
       RowKey = "lol"

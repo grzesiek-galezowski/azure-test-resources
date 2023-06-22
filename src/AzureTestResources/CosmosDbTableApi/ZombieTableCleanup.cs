@@ -4,7 +4,7 @@ using Azure.Data.Tables;
 
 namespace AzureTestResources.CosmosDbTableApi;
 
-public static class ZombieTableCleanup //bug use in tests
+public static class ZombieTableCleanup
 {
   private static readonly TimeSpan DefaultTolerance = TimeSpan.FromMinutes(1);
 

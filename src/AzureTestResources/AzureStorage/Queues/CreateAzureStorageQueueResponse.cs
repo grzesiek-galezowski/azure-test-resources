@@ -7,7 +7,7 @@ namespace AzureTestResources.AzureStorage.Queues;
 
 public class CreateAzureStorageQueueResponse : ICreateAzureResourceResponse<StorageTestQueue>
 {
-  private readonly Response<QueueClient> _response; //bug
+  private readonly Response<QueueClient> _response;
   private readonly string _resourceName;
   private readonly QueueServiceClient _client;
   private readonly string _connectionString;

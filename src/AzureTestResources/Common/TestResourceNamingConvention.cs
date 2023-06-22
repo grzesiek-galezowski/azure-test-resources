@@ -37,7 +37,7 @@ public static class TestResourceNamingConvention
     var timeOfCreation = GetTimeOfCreationOf(dbName);
     if (timeOfCreation != utcNow)
     {
-      throw new Exception( //bug
+      throw new FormatException( //bug
         $"Could not get the correct time of creation from {dbName}. " +
         $"Expected {utcNow} but got {timeOfCreation}");
     }

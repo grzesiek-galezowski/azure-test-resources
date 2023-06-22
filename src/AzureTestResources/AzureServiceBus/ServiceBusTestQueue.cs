@@ -1,8 +1,9 @@
 ﻿using Azure.Messaging.ServiceBus.Administration;
+using AzureTestResources.Common;
 
 namespace AzureTestResources.AzureServiceBus;
 
-public class ServiceBusTestQueue : IAsyncDisposable
+public class ServiceBusTestQueue : IAzureResourceApi
 {
   private readonly ServiceBusAdministrationClient _serviceBusClient;
   private readonly string _queueName;

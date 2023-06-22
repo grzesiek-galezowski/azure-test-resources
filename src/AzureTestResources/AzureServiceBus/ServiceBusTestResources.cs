@@ -27,7 +27,7 @@ public static class ServiceBusTestResources
             AutoDeleteOnIdle = AutoDeleteOnIdle,
           }, cancellationToken);
 
-        AssertValidResponse(response, topicName);
+        AssertValidResponseTopic(response, topicName);
 
         return response;
       });
@@ -57,7 +57,7 @@ public static class ServiceBusTestResources
             AutoDeleteOnIdle = AutoDeleteOnIdle,
           }, cancellationToken);
 
-        AssertValidResponse(response, queueName);
+        AssertValidResponseQueue(response, queueName);
 
         return response;
       });
@@ -69,29 +69,17 @@ public static class ServiceBusTestResources
       cancellationToken);
   }
 
-  private static void AssertValidResponse(NullableResponse<QueueProperties> response, string resourceName)
+  private static void AssertValidResponseQueue(NullableResponse<QueueProperties> response, string resourceName)
   {
-    if (!response.HasValue)
-    {
-      throw new InvalidOperationException("Could not create a subscription " + resourceName);
-    }
-
-    if (resourceName != response.Value.Name)
-    {
-      throw new InvalidOperationException("Naming mismatch");
-    }
+    Assertions.AssertIsHttpCreated(response, "queue");
+    Assertions.AssertNotNull(response, "queue", resourceName);
+    Assertions.AssertNamesMatch(resourceName, response.Value.Name);
   }
 
-  private static void AssertValidResponse(NullableResponse<TopicProperties> response, string topicName)
+  private static void AssertValidResponseTopic(NullableResponse<TopicProperties> response, string topicName)
   {
-    if (!response.HasValue)
-    {
-      throw new InvalidOperationException("Could not create a subscription " + topicName);
-    }
-
-    if (topicName != response.Value.Name)
-    {
-      throw new InvalidOperationException("Naming mismatch");
-    }
+    Assertions.AssertIsHttpCreated(response, "topic");
+    Assertions.AssertNotNull(response, "topic", topicName);
+    Assertions.AssertNamesMatch(topicName, response.Value.Name);
   }
 }

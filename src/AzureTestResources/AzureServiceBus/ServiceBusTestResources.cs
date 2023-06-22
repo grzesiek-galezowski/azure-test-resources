@@ -1,5 +1,6 @@
 using Azure;
 using Azure.Messaging.ServiceBus.Administration;
+using AzureTestResources.Common;
 using Microsoft.Extensions.Logging;
 
 namespace AzureTestResources.AzureServiceBus;

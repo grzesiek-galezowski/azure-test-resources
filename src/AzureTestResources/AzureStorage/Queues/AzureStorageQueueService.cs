@@ -1,5 +1,5 @@
 using Azure.Storage.Queues;
-using AzureTestResources.AzureStorage.Common;
+using AzureTestResources.Common;
 
 namespace AzureTestResources.AzureStorage.Queues;
 
@@ -10,7 +10,7 @@ public class AzureStorageQueueService : IAzureService<StorageTestQueue>
   private readonly CancellationToken _cancellationToken;
 
   public AzureStorageQueueService(
-    QueueServiceClient client, 
+    QueueServiceClient client,
     string connectionString,
     CancellationToken cancellationToken)
   {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Immutable;
 using System.Net;
 using Azure.Data.Tables;
-using AzureTestResources.AzureStorage.Common;
+using AzureTestResources.Common;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
 

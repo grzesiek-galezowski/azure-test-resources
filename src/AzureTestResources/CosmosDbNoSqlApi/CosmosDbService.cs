@@ -1,6 +1,6 @@
 using System.Collections.Immutable;
 using System.Net;
-using AzureTestResources.AzureStorage.Common;
+using AzureTestResources.Common;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
 
@@ -37,12 +37,13 @@ public class CosmosDbService : IAzureService<CosmosTestDatabase>
   {
     try
     {
+      var dbName = TestResourceNamingConvention.GenerateResourceId(_config.NamePrefix);
       var databaseResponse =
         await _client.CreateDatabaseAsync(
-          TestResourceNamingConvention.GenerateResourceId(_config.NamePrefix),
+          dbName,
           cancellationToken: _cancellationToken);
 
-      return new CreateCosmosDatabaseResponse(_config, _logger, databaseResponse, _cancellationToken);
+      return new CreateCosmosDatabaseResponse(_config, _logger, databaseResponse, dbName, _cancellationToken);
     }
     catch (CosmosException ex) when (CreateResourceRetryCodes.Contains(ex.StatusCode))
     {

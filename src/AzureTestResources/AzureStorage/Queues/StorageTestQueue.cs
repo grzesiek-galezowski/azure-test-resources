@@ -1,5 +1,5 @@
 ﻿using Azure.Storage.Queues;
-using AzureTestResources.AzureStorage.Common;
+using AzureTestResources.Common;
 
 namespace AzureTestResources.AzureStorage.Queues;
 

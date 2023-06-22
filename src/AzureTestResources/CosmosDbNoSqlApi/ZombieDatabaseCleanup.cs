@@ -1,4 +1,5 @@
 using System.Net;
+using AzureTestResources.Common;
 using AzureTestResources.CosmosDbNoSqlApi.ImplementationDetails;
 using Microsoft.Azure.Cosmos;
 

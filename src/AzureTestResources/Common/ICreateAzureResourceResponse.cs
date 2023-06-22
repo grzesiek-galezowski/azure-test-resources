@@ -1,4 +1,4 @@
-namespace AzureTestResources.AzureStorage.Common;
+namespace AzureTestResources.Common;
 
 public interface ICreateAzureResourceResponse<out TApi> where TApi : IAzureResourceApi
 {

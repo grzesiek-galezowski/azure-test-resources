@@ -9,41 +9,29 @@ namespace AzureTestResources.CosmosDbNoSqlApi.ImplementationDetails;
 
 public static class CosmosDbRequestPolicyFactory
 {
-    private static readonly IReadOnlyList<HttpStatusCode> CreateResourceRetryCodes =
-      new List<HttpStatusCode>
-      {
-      HttpStatusCode.ServiceUnavailable,
-      HttpStatusCode.InternalServerError,
-      HttpStatusCode.Conflict
-      }.ToImmutableArray();
-
-    private static readonly IReadOnlyList<HttpStatusCode> CreateSubResourceRetryCodes =
-      new List<HttpStatusCode>
-      {
+  private static readonly IReadOnlyList<HttpStatusCode> CreateSubResourceRetryCodes =
+    new List<HttpStatusCode>
+    {
       HttpStatusCode.ServiceUnavailable,
       HttpStatusCode.InternalServerError
-      }.ToImmutableArray();
+    }.ToImmutableArray();
 
-    public static AsyncRetryPolicy CreateCreateResourcePolicy(ILogger logger)
-    {
-        return CreateDefaultPolicy(logger, CreateResourceRetryCodes);
-    }
+  public static AsyncRetryPolicy CreateCreateSubResourcePolicy(ILogger logger)
+  {
+    return CreateDefaultPolicy(logger, CreateSubResourceRetryCodes);
+  }
 
-    public static AsyncRetryPolicy CreateCreateSubResourcePolicy(ILogger logger)
-    {
-        return CreateDefaultPolicy(logger, CreateSubResourceRetryCodes);
-    }
-
-    private static AsyncRetryPolicy CreateDefaultPolicy(ILogger logger,
-      IReadOnlyList<HttpStatusCode> createResourceRetryCodes)
-    {
-        return Policy.Handle<CosmosException>(
-            e => createResourceRetryCodes.Any(c => c == e.StatusCode))
-          .WaitAndRetryAsync(10,
-            _ => TimeSpan.FromSeconds(5),
-            (exception, _, retryCount, _) =>
-            {
-                logger.LogWarning($"Retry {retryCount} due to status code {((CosmosException)exception).StatusCode}");
-            });
-    }
+  //bug replace with common policy
+  private static AsyncRetryPolicy CreateDefaultPolicy(ILogger logger,
+    IReadOnlyList<HttpStatusCode> createResourceRetryCodes)
+  {
+    return Policy.Handle<CosmosException>(
+        e => createResourceRetryCodes.Any(c => c == e.StatusCode))
+      .WaitAndRetryAsync(10,
+        _ => TimeSpan.FromSeconds(5),
+        (exception, _, retryCount, _) =>
+        {
+          logger.LogWarning($"Retry {retryCount} due to status code {((CosmosException)exception).StatusCode}");
+        });
+  }
 }

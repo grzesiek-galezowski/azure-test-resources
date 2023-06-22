@@ -1,5 +1,5 @@
 using Azure.Data.Tables;
-using AzureTestResources.AzureStorage.Common;
+using AzureTestResources.Common;
 using Microsoft.Extensions.Logging;
 
 namespace AzureTestResources.CosmosDbTableApi;
@@ -11,8 +11,8 @@ public static class CosmosDbTableResources
   private static async Task<CosmosTestTable> CreateTable(CosmosTestTableConfig config, ILogger logger)
   {
     var cosmosDbTableService = new CosmosDbTableService(
-      config, 
-      logger, 
+      config,
+      logger,
       new TableServiceClient(config.ConnectionString));
 
     var api = await AzureResources.CreateApiToUnderlyingResource(cosmosDbTableService, logger);

@@ -1,4 +1,4 @@
-using AzureTestResources.AzureStorage.Common;
+using AzureTestResources.Common;
 using AzureTestResources.CosmosDbNoSqlApi.ImplementationDetails;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
@@ -9,24 +9,27 @@ public class CreateCosmosDatabaseResponse : ICreateAzureResourceResponse<CosmosT
 {
   private readonly CancellationToken _cancellationToken;
   private readonly DatabaseResponse _databaseResponse;
+  private readonly string _dbName;
   private readonly ILogger _logger;
   private readonly CosmosTestDatabaseConfig _config;
 
-  public CreateCosmosDatabaseResponse(
-    CosmosTestDatabaseConfig config, 
-    ILogger logger, 
-    DatabaseResponse databaseResponse, 
+  public CreateCosmosDatabaseResponse(CosmosTestDatabaseConfig config,
+    ILogger logger,
+    DatabaseResponse databaseResponse,
+    string dbName,
     CancellationToken cancellationToken)
   {
     _config = config;
     _logger = logger;
     _databaseResponse = databaseResponse;
+    _dbName = dbName;
     _cancellationToken = cancellationToken;
   }
 
   public void AssertValidResponse()
   {
-    //bug assert on status code?
+    CosmosDbAssertions.AssertIsHttpCreated(_databaseResponse, "database");
+    CosmosDbAssertions.AssertNamesMatch(_dbName, _databaseResponse.Resource.Id);
   }
 
   public bool ShouldBeRetried()

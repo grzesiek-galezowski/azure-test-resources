@@ -1,6 +1,6 @@
 using Azure;
 using Azure.Storage.Blobs;
-using AzureTestResources.AzureStorage.Common;
+using AzureTestResources.Common;
 
 namespace AzureTestResources.AzureStorage.Blobs;
 
@@ -34,7 +34,7 @@ public class AzureStorageBlobService : IAzureService<StorageTestBlobContainer>
     catch (RequestFailedException ex)
     {
       return new ResourceCouldNotBeCreatedResponse<StorageTestBlobContainer>(
-        ex, 
+        ex,
         ex.ErrorCode == "ContainerAlreadyExists");
     }
   }

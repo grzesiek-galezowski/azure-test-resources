@@ -1,8 +1,8 @@
 using Azure.Storage.Blobs;
 using Azure.Storage.Queues;
 using AzureTestResources.AzureStorage.Blobs;
-using AzureTestResources.AzureStorage.Common;
 using AzureTestResources.AzureStorage.Queues;
+using AzureTestResources.Common;
 using Microsoft.Extensions.Logging;
 using Polly;
 

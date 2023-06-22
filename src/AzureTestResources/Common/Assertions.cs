@@ -1,7 +1,7 @@
 using System.Net;
 using Azure;
 
-namespace AzureTestResources.AzureStorage.Common;
+namespace AzureTestResources.Common;
 
 static internal class Assertions
 {

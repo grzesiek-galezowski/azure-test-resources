@@ -1,6 +1,6 @@
-namespace AzureTestResources.AzureStorage.Common;
+namespace AzureTestResources.Common;
 
-public class ResourceCouldNotBeCreatedResponse<TApi> : ICreateAzureResourceResponse<TApi> 
+public class ResourceCouldNotBeCreatedResponse<TApi> : ICreateAzureResourceResponse<TApi>
   where TApi : IAzureResourceApi
 {
   private readonly Exception _rootCause;

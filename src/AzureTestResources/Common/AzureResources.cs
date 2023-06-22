@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Logging;
 using Polly;
 
-namespace AzureTestResources.AzureStorage.Common;
+namespace AzureTestResources.Common;
 
 public static class AzureResources
 {

@@ -1,6 +1,7 @@
 using System.Net;
 using Azure;
 using Azure.Data.Tables;
+using AzureTestResources.Common;
 
 namespace AzureTestResources.CosmosDbTableApi;
 

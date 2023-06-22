@@ -1,4 +1,4 @@
-using AzureTestResources.AzureStorage.Common;
+using AzureTestResources.Common;
 using AzureTestResources.CosmosDbNoSqlApi.ImplementationDetails;
 using Microsoft.Extensions.Logging;
 
@@ -18,13 +18,13 @@ public static class CosmosDbResources
     ILogger logger)
   {
     var cosmosDbService = new CosmosDbService(
-      CosmosClientFactory.CreateCosmosClient(config), 
-      config, 
-      logger, 
+      CosmosClientFactory.CreateCosmosClient(config),
+      config,
+      logger,
       new CancellationToken());
 
     var cosmosTestDatabase = await AzureResources.CreateApiToUnderlyingResource(
-      cosmosDbService, 
+      cosmosDbService,
       logger);
 
     return cosmosTestDatabase;

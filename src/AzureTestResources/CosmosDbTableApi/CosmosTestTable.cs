@@ -1,5 +1,5 @@
 ﻿using Azure.Data.Tables;
-using AzureTestResources.AzureStorage.Common;
+using AzureTestResources.Common;
 using Microsoft.Extensions.Logging;
 
 namespace AzureTestResources.CosmosDbTableApi;

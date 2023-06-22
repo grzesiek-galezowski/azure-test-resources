@@ -1,7 +1,7 @@
 ﻿using Azure;
 using Azure.Data.Tables;
 using Azure.Data.Tables.Models;
-using AzureTestResources.AzureStorage.Common;
+using AzureTestResources.Common;
 using Microsoft.Extensions.Logging;
 
 namespace AzureTestResources.CosmosDbTableApi;
@@ -17,7 +17,7 @@ public class CreateCosmosTableResponse : ICreateAzureResourceResponse<CosmosTest
   public CreateCosmosTableResponse(CosmosTestTableConfig config,
     ILogger logger,
     Response<TableItem> response,
-    TableServiceClient client, 
+    TableServiceClient client,
     string tableName)
   {
     _config = config;

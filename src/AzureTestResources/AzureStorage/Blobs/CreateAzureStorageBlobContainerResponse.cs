@@ -1,7 +1,7 @@
 using System.Net;
 using Azure;
 using Azure.Storage.Blobs;
-using AzureTestResources.AzureStorage.Common;
+using AzureTestResources.Common;
 
 namespace AzureTestResources.AzureStorage.Blobs;
 

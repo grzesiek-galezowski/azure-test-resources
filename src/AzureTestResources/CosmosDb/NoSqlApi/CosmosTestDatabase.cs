@@ -38,7 +38,7 @@ public class CosmosTestDatabase : IAzureResourceApi
       await container.DeleteContainerAsync(cancellationToken: _cancellationToken);
     }
 
-    _logger.LogInformation($"Deleting database {_database.Id}");
+    _logger.LogInformation($"Deleting database {_database.Id}"); //bug more logging
     await _database.DeleteAsync(cancellationToken: _cancellationToken);
   }
 

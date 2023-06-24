@@ -19,4 +19,20 @@ public static class DatabaseInformation
 
     return databases;
   }
+
+  public static async Task<List<ContainerProperties>> GetContainerList(Database database)
+  {
+    var databases = new List<ContainerProperties>();
+
+    // Create a database iterator
+    var databaseIterator = database.GetContainerQueryIterator<ContainerProperties>();
+
+    while (databaseIterator.HasMoreResults)
+    {
+      var response = await databaseIterator.ReadNextAsync();
+      databases.AddRange(response);
+    }
+
+    return databases;
+  }
 }

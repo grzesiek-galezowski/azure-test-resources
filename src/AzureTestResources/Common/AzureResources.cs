@@ -18,7 +18,7 @@ public static class AzureResources
           logger.LogWarning($"Retry {retryCount} due to {delegateResult.Result.GetReasonForRetry()}");
         })
       .ExecuteAsync(async () => await service.CreateResourceInstance());
-    response.AssertValidResponse();
+    response.AssertResourceCreated();
     return response.CreateResourceApi();
   }
 }

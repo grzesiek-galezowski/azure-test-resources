@@ -2,7 +2,7 @@ namespace AzureTestResources.Common;
 
 public interface ICreateAzureResourceResponse<out TApi> where TApi : IAzureResourceApi
 {
-  void AssertValidResponse();
+  void AssertResourceCreated();
   bool ShouldBeRetried();
   string GetReasonForRetry();
   TApi CreateResourceApi();

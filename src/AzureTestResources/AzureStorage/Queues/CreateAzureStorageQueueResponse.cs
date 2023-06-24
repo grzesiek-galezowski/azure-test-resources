@@ -27,7 +27,7 @@ public class CreateAzureStorageQueueResponse : ICreateAzureResourceResponse<Stor
     _cancellationToken = cancellationToken;
   }
 
-  public void AssertValidResponse()
+  public void AssertResourceCreated()
   {
     var resourceType = "queue";
     Assertions.AssertNotNull(_response, resourceType, _resourceName);

@@ -12,7 +12,7 @@ public class ResourceCouldNotBeCreatedResponse<TApi> : ICreateAzureResourceRespo
     _shouldBeRetried = shouldBeRetried;
   }
 
-  public void AssertValidResponse()
+  public void AssertResourceCreated()
   {
     throw _rootCause;
   }

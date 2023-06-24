@@ -27,7 +27,7 @@ public class CreateAzureStorageBlobContainerResponse : ICreateAzureResourceRespo
     _cancellationToken = cancellationToken;
   }
 
-  public void AssertValidResponse()
+  public void AssertResourceCreated()
   {
     var resourceType = "blob container";
     Assertions.AssertNotNull(_response, resourceType, _resourceName);

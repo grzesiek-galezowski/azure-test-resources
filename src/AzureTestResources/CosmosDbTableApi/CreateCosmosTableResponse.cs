@@ -27,7 +27,7 @@ public class CreateCosmosTableResponse : ICreateAzureResourceResponse<CosmosTest
     _tableName = tableName;
   }
 
-  public void AssertValidResponse()
+  public void AssertResourceCreated()
   {
     Assertions.AssertNotNull(_response, "database", _tableName);
     Assertions.AssertIsHttpCreated(_response, "database");

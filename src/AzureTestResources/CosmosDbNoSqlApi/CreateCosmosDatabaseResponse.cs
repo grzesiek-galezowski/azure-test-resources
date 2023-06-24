@@ -26,7 +26,7 @@ public class CreateCosmosDatabaseResponse : ICreateAzureResourceResponse<CosmosT
     _cancellationToken = cancellationToken;
   }
 
-  public void AssertValidResponse()
+  public void AssertResourceCreated()
   {
     CosmosDbAssertions.AssertIsHttpCreated(_databaseResponse, "database");
     CosmosDbAssertions.AssertNamesMatch(_dbName, _databaseResponse.Resource.Id);

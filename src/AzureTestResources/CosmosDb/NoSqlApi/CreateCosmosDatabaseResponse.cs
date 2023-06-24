@@ -1,9 +1,9 @@
 using AzureTestResources.Common;
-using AzureTestResources.CosmosDbNoSqlApi.ImplementationDetails;
+using AzureTestResources.CosmosDb.NoSqlApi.ImplementationDetails;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
 
-namespace AzureTestResources.CosmosDbNoSqlApi;
+namespace AzureTestResources.CosmosDb.NoSqlApi;
 
 public class CreateCosmosDatabaseResponse : ICreateAzureResourceResponse<CosmosTestDatabase>
 {
@@ -13,7 +13,8 @@ public class CreateCosmosDatabaseResponse : ICreateAzureResourceResponse<CosmosT
   private readonly ILogger _logger;
   private readonly CosmosTestDatabaseConfig _config;
 
-  public CreateCosmosDatabaseResponse(CosmosTestDatabaseConfig config,
+  public CreateCosmosDatabaseResponse(
+    CosmosTestDatabaseConfig config,
     ILogger logger,
     DatabaseResponse databaseResponse,
     string dbName,

@@ -1,5 +1,5 @@
 ﻿using Azure.Data.Tables;
-using AzureTestResources.CosmosDbTableApi;
+using AzureTestResources.CosmosDb.TableApi;
 using Extensions.Logging.NUnit;
 
 namespace AzureTestResourcesSpecification;

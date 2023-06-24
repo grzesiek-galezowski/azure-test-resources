@@ -1,9 +1,9 @@
 using System.Net;
 using AzureTestResources.Common;
-using AzureTestResources.CosmosDbNoSqlApi.ImplementationDetails;
+using AzureTestResources.CosmosDb.NoSqlApi.ImplementationDetails;
 using Microsoft.Azure.Cosmos;
 
-namespace AzureTestResources.CosmosDbNoSqlApi;
+namespace AzureTestResources.CosmosDb.NoSqlApi;
 
 public static class ZombieDatabaseCleanup
 {

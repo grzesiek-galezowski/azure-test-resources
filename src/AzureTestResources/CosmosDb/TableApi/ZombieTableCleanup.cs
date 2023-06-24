@@ -3,7 +3,7 @@ using Azure;
 using Azure.Data.Tables;
 using AzureTestResources.Common;
 
-namespace AzureTestResources.CosmosDbTableApi;
+namespace AzureTestResources.CosmosDb.TableApi;
 
 public static class ZombieTableCleanup
 {

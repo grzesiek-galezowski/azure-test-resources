@@ -4,7 +4,7 @@ using AzureTestResources.Common;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
 
-namespace AzureTestResources.CosmosDbNoSqlApi;
+namespace AzureTestResources.CosmosDb.NoSqlApi;
 
 public class CosmosDbService : IAzureService<CosmosTestDatabase>
 {
@@ -43,7 +43,12 @@ public class CosmosDbService : IAzureService<CosmosTestDatabase>
           dbName,
           cancellationToken: _cancellationToken);
 
-      return new CreateCosmosDatabaseResponse(_config, _logger, databaseResponse, dbName, _cancellationToken);
+      return new CreateCosmosDatabaseResponse(
+        _config,
+        _logger,
+        databaseResponse,
+        dbName,
+        _cancellationToken);
     }
     catch (CosmosException ex) when (CreateResourceRetryCodes.Contains(ex.StatusCode))
     {

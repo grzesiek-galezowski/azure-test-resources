@@ -1,7 +1,7 @@
 using System.Net;
 using Microsoft.Azure.Cosmos;
 
-namespace AzureTestResources.CosmosDbNoSqlApi.ImplementationDetails;
+namespace AzureTestResources.CosmosDb.NoSqlApi.ImplementationDetails;
 
 internal static class CosmosDbAssertions
 {

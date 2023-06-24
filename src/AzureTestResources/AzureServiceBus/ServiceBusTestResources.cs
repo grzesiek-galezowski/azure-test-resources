@@ -6,7 +6,6 @@ using Microsoft.Extensions.Logging;
 
 namespace AzureTestResources.AzureServiceBus;
 
-//bug dispose of Cosmos client???
 public static class ServiceBusTestResources
 {
   private static readonly TimeSpan AutoDeleteOnIdle = TimeSpan.FromMinutes(5);

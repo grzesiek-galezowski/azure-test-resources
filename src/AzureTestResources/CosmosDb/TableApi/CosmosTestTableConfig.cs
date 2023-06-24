@@ -1,4 +1,4 @@
-﻿namespace AzureTestResources.CosmosDbTableApi;
+﻿namespace AzureTestResources.CosmosDb.TableApi;
 
 public record CosmosTestTableConfig(string ConnectionString, string NamePrefix)
 {

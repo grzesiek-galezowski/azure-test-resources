@@ -2,7 +2,7 @@ using Azure.Data.Tables;
 using AzureTestResources.Common;
 using Microsoft.Extensions.Logging;
 
-namespace AzureTestResources.CosmosDbTableApi;
+namespace AzureTestResources.CosmosDb.TableApi;
 
 public static class CosmosDbTableResources
 {

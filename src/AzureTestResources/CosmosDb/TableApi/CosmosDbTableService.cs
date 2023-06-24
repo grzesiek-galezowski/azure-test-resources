@@ -5,7 +5,7 @@ using AzureTestResources.Common;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
 
-namespace AzureTestResources.CosmosDbTableApi;
+namespace AzureTestResources.CosmosDb.TableApi;
 
 public class CosmosDbTableService : IAzureService<CosmosTestTable>
 {

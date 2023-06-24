@@ -3,7 +3,7 @@ using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
 using Polly.Retry;
 
-namespace AzureTestResources.CosmosDbNoSqlApi;
+namespace AzureTestResources.CosmosDb.NoSqlApi;
 
 public class CosmosTestDatabase : IAzureResourceApi
 {

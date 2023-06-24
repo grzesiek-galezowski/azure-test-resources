@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using Polly;
 using Polly.Retry;
 
-namespace AzureTestResources.CosmosDbNoSqlApi.ImplementationDetails;
+namespace AzureTestResources.CosmosDb.NoSqlApi.ImplementationDetails;
 
 public static class CosmosDbRequestPolicyFactory
 {

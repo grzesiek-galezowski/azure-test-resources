@@ -32,14 +32,14 @@ public static class TestResourceNamingConvention
       $@"^[^{NameDelimiter}]+{NameDelimiter}\d+{NameDelimiter}\w{{8}}\w{{4}}\w{{4}}\w{{4}}\w{{12}}$").Success;
   }
 
-  private static void AssertCreationTimeCanBeParsedBackFrom(string dbName, DateTime utcNow)
+  private static void AssertCreationTimeCanBeParsedBackFrom(string dbName, DateTime originalCreationTime)
   {
-    var timeOfCreation = GetTimeOfCreationOf(dbName);
-    if (timeOfCreation != utcNow)
+    var timeOfCreationParsedBack = GetTimeOfCreationOf(dbName);
+    if (timeOfCreationParsedBack != originalCreationTime)
     {
-      throw new FormatException( //bug
+      throw new FormatException(
         $"Could not get the correct time of creation from {dbName}. " +
-        $"Expected {utcNow} but got {timeOfCreation}");
+        $"Expected {originalCreationTime} but got {timeOfCreationParsedBack}");
     }
   }
 

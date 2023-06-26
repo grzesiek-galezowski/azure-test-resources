@@ -7,12 +7,9 @@ namespace AzureTestResources.CosmosDb.TableApi;
 
 public static class ZombieTableCleanup
 {
-  //bug pick tolerance based on emulator/cloud resource
-  private static readonly TimeSpan DefaultTolerance = TimeSpan.FromMinutes(1);
-
   public static async Task DeleteZombieTables(CosmosTestTableConfig config)
   {
-    await DeleteZombieTables(config, DefaultTolerance);
+    await DeleteZombieTables(config, AzureResources.DefaultZombieToleranceForEmulator);
   }
 
   private static async Task DeleteZombieTables(CosmosTestTableConfig config, TimeSpan tolerance)

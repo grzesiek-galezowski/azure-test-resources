@@ -61,7 +61,6 @@ public class AzureStorageBlobContainersSpecification
 
     var responseText = await GetStringFrom(response);
     Assert.AreEqual(messageText, responseText);
-    //bug zombie removal
   }
 
   private static async Task Upload(string messageText, BlobClient blobClient)

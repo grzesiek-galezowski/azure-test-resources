@@ -6,7 +6,6 @@ namespace AzureTestResources.AzureServiceBus.Topics;
 
 public class AzureServiceBusTopicService : IAzureService<ServiceBusTestTopic>
 {
-  //bug
   private readonly ServiceBusAdministrationClient _serviceBusClient;
   private readonly CancellationToken _cancellationToken;
   private readonly string _namePrefix;
@@ -44,9 +43,7 @@ public class AzureServiceBusTopicService : IAzureService<ServiceBusTestTopic>
         topicName);
       return response;
     }
-    catch (ServiceBusException ex) when (
-      ex.Reason == ServiceBusFailureReason.MessagingEntityAlreadyExists
-      || ex.Message.Contains("SubCode=40901."))
+    catch (ServiceBusException ex) when (RetryConditions.RequiresRetry(ex))
     {
       return new ResourceCouldNotBeCreatedResponse<ServiceBusTestTopic>(ex, true);
     }

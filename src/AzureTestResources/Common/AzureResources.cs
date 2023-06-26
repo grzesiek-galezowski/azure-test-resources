@@ -21,4 +21,6 @@ public static class AzureResources
     response.AssertResourceCreated();
     return response.CreateResourceApi();
   }
+
+  public static readonly TimeSpan DefaultZombieToleranceForEmulator = TimeSpan.FromMinutes(1);
 }

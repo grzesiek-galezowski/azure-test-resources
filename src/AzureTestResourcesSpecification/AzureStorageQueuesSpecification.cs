@@ -54,7 +54,5 @@ public class AzureStorageQueuesSpecification
 
     var message = await queueClient.ReceiveMessageAsync();
     Assert.AreEqual(messageText, message.Value.MessageText);
-
-    //bug zombie removal
   }
 }

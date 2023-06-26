@@ -43,9 +43,7 @@ public class AzureServiceBusQueueService : IAzureService<ServiceBusTestQueue>
         topicName);
       return response;
     }
-    catch (ServiceBusException ex) when (
-      ex.Reason == ServiceBusFailureReason.MessagingEntityAlreadyExists
-      || ex.Message.Contains("SubCode=40901."))
+    catch (ServiceBusException ex) when (RetryConditions.RequiresRetry(ex))
     {
       return new ResourceCouldNotBeCreatedResponse<ServiceBusTestQueue>(ex, true);
     }

@@ -7,13 +7,10 @@ namespace AzureTestResources.AzureStorage.Blobs;
 
 public class ZombieBlobContainerCleanup
 {
-  //bug commonalize default tolerance, maybe call it emulator tolerance or sth.
-  private static readonly TimeSpan DefaultTolerance = TimeSpan.FromMinutes(1);
-
-  //bug make these parameterless versions for all zombie routines
-  //and the other should accept config or both connection string+tolerance
   public static async Task DeleteZombieContainers()
-    => await DeleteZombieContainers(AzureStorageResources.AzuriteConnectionString, DefaultTolerance);
+    => await DeleteZombieContainers(
+      AzureStorageResources.AzuriteConnectionString, 
+      AzureResources.DefaultZombieToleranceForEmulator);
 
   public static async Task DeleteZombieContainers(string connectionString, TimeSpan tolerance)
   {

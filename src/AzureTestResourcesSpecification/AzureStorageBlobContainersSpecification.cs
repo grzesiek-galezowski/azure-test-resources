@@ -2,14 +2,17 @@
 using Azure;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
-using Azure.Storage.Queues;
 using AzureTestResources.AzureStorage;
+using AzureTestResources.AzureStorage.Blobs;
 using Extensions.Logging.NUnit;
 
 namespace AzureTestResourcesSpecification;
 
 public class AzureStorageBlobContainersSpecification
 {
+  private readonly Lazy<Task> _deleteAllDatabases 
+    = new(ZombieBlobContainerCleanup.DeleteZombieContainers);
+
   [TestCase(1)]
   [TestCase(2)]
   [TestCase(3)]
@@ -44,6 +47,8 @@ public class AzureStorageBlobContainersSpecification
   [TestCase(36)]
   public async Task ShouldCreateAzureStorageBlobContainer(int testNo)
   {
+    await _deleteAllDatabases.Value;
+
     var messageText = "lol";
     await using var container = await AzureStorageResources.CreateBlobContainer(
       new NUnitLogger("blob"), new CancellationToken());

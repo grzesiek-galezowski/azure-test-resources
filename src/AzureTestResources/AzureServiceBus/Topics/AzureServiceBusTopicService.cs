@@ -1,6 +1,5 @@
 using Azure.Messaging.ServiceBus;
 using Azure.Messaging.ServiceBus.Administration;
-using AzureTestResources.AzureServiceBus.Queues;
 using AzureTestResources.Common;
 
 namespace AzureTestResources.AzureServiceBus.Topics;

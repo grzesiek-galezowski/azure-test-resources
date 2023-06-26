@@ -1,11 +1,15 @@
 ﻿using Azure.Storage.Queues;
 using AzureTestResources.AzureStorage;
+using AzureTestResources.AzureStorage.Queues;
 using Extensions.Logging.NUnit;
 
 namespace AzureTestResourcesSpecification;
 
 public class AzureStorageQueuesSpecification
 {
+  private readonly Lazy<Task> _deleteAllQueues 
+    = new(ZombieStorageQueueCleanup.DeleteZombieQueues);
+
   [TestCase(1)]
   [TestCase(2)]
   [TestCase(3)]
@@ -40,6 +44,8 @@ public class AzureStorageQueuesSpecification
   [TestCase(36)]
   public async Task ShouldCreateAzureStorageQueue(int testNo)
   {
+    await _deleteAllQueues.Value;
+
     var messageText = "lol";
     await using var queue = await AzureStorageResources.CreateQueue(
       new NUnitLogger("storagequeue"), new CancellationToken());

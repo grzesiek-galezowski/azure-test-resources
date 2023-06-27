@@ -9,7 +9,7 @@ public class ZombieStorageQueueCleanup
 {
   public static async Task DeleteZombieQueues()
     => await DeleteZombieQueues(
-      AzureStorageResources.AzuriteConnectionString, 
+      AzureStorageResources.AzuriteConnectionString,
       AzureResources.DefaultZombieToleranceForEmulator);
 
   public static async Task DeleteZombieQueues(string connectionString, TimeSpan tolerance)

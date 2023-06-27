@@ -7,7 +7,7 @@ namespace AzureTestResourcesSpecification;
 
 public class AzureStorageQueuesSpecification
 {
-  private readonly Lazy<Task> _deleteAllQueues 
+  private readonly Lazy<Task> _deleteAllQueues
     = new(ZombieStorageQueueCleanup.DeleteZombieQueues);
 
   [TestCase(1)]

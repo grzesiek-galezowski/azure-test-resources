@@ -10,7 +10,7 @@ namespace AzureTestResourcesSpecification;
 
 public class AzureStorageBlobContainersSpecification
 {
-  private readonly Lazy<Task> _deleteAllDatabases 
+  private readonly Lazy<Task> _deleteAllDatabases
     = new(ZombieBlobContainerCleanup.DeleteZombieContainers);
 
   [TestCase(1)]

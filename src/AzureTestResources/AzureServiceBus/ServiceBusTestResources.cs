@@ -20,9 +20,10 @@ public static class ServiceBusTestResources
     var service = new AzureServiceBusTopicService(
       connectionString,
       namePrefix,
-      cancellationToken,
-      new ServiceBusAdministrationClient(connectionString), 
-      AutoDeleteOnIdle);
+      new ServiceBusAdministrationClient(connectionString),
+      AutoDeleteOnIdle, 
+      logger,
+      cancellationToken);
 
     var instance = await AzureResources.CreateApiToUnderlyingResource(service, logger);
 
@@ -38,9 +39,8 @@ public static class ServiceBusTestResources
     var service = new AzureServiceBusQueueService(
       connectionString,
       namePrefix,
-      cancellationToken,
-      new ServiceBusAdministrationClient(connectionString), 
-      AutoDeleteOnIdle);
+      new ServiceBusAdministrationClient(connectionString),
+      AutoDeleteOnIdle, cancellationToken);
 
     var instance = await AzureResources.CreateApiToUnderlyingResource(service, logger);
 

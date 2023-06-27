@@ -15,9 +15,9 @@ public class AzureServiceBusQueueService : IAzureService<ServiceBusTestQueue>
   public AzureServiceBusQueueService(
     string connectionString,
     string namePrefix,
-    CancellationToken cancellationToken,
     ServiceBusAdministrationClient serviceBusClient,
-    TimeSpan autoDeleteOnIdle)
+    TimeSpan autoDeleteOnIdle,
+    CancellationToken cancellationToken)
   {
     _connectionString = connectionString;
     _namePrefix = namePrefix;
@@ -30,17 +30,21 @@ public class AzureServiceBusQueueService : IAzureService<ServiceBusTestQueue>
   {
     try
     {
-      var topicName = TestResourceNamingConvention.GenerateResourceId(_namePrefix);
+      var queueName = TestResourceNamingConvention.GenerateResourceId(_namePrefix);
+
+      Console.WriteLine(SomeLogging.Creating($"service bus queue", queueName)); //bug
+      var sdkResponse = await _serviceBusClient.CreateQueueAsync(
+        new CreateQueueOptions(queueName)
+        {
+          AutoDeleteOnIdle = _autoDeleteOnIdle
+        }, _cancellationToken);
       var response = new CreateAzureServiceBusQueueResponse(
         _connectionString,
         _cancellationToken,
         _serviceBusClient,
-        await _serviceBusClient.CreateQueueAsync(
-          new CreateQueueOptions(topicName)
-          {
-            AutoDeleteOnIdle = _autoDeleteOnIdle
-          }, _cancellationToken),
-        topicName);
+        sdkResponse,
+        queueName);
+      Console.WriteLine(SomeLogging.Created("Queue", queueName)); //bug
       return response;
     }
     catch (ServiceBusException ex) when (RetryConditions.RequiresRetry(ex))

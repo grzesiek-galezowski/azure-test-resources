@@ -9,7 +9,7 @@ public class ZombieBlobContainerCleanup
 {
   public static async Task DeleteZombieContainers()
     => await DeleteZombieContainers(
-      AzureStorageResources.AzuriteConnectionString, 
+      AzureStorageResources.AzuriteConnectionString,
       AzureResources.DefaultZombieToleranceForEmulator);
 
   public static async Task DeleteZombieContainers(string connectionString, TimeSpan tolerance)

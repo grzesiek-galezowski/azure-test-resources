@@ -38,7 +38,7 @@ public class AzureServiceBusQueueService : IAzureService<ServiceBusTestQueue>
         await _serviceBusClient.CreateQueueAsync(
           new CreateQueueOptions(topicName)
           {
-            AutoDeleteOnIdle = _autoDeleteOnIdle,
+            AutoDeleteOnIdle = _autoDeleteOnIdle
           }, _cancellationToken),
         topicName);
       return response;

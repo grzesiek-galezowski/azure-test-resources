@@ -38,7 +38,7 @@ public class AzureServiceBusTopicService : IAzureService<ServiceBusTestTopic>
         await _serviceBusClient.CreateTopicAsync(
           new CreateTopicOptions(topicName)
           {
-            AutoDeleteOnIdle = _autoDeleteOnIdle,
+            AutoDeleteOnIdle = _autoDeleteOnIdle
           }, _cancellationToken),
         topicName);
       return response;

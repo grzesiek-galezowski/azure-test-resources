@@ -2,6 +2,7 @@ using System.Net;
 using Azure;
 using Azure.Storage.Blobs;
 using AzureTestResources.Common;
+using Microsoft.Extensions.Logging;
 
 namespace AzureTestResources.AzureStorage.Blobs;
 
@@ -11,6 +12,7 @@ public class CreateAzureStorageBlobContainerResponse : ICreateAzureResourceRespo
   private readonly string _resourceName;
   private readonly BlobServiceClient _client;
   private readonly string _connectionString;
+  private readonly ILogger _logger;
   private readonly CancellationToken _cancellationToken;
 
   public CreateAzureStorageBlobContainerResponse(
@@ -18,12 +20,14 @@ public class CreateAzureStorageBlobContainerResponse : ICreateAzureResourceRespo
     string resourceName,
     BlobServiceClient client,
     string connectionString,
+    ILogger logger,
     CancellationToken cancellationToken)
   {
     _response = response;
     _resourceName = resourceName;
     _client = client;
     _connectionString = connectionString;
+    _logger = logger;
     _cancellationToken = cancellationToken;
   }
 
@@ -50,7 +54,8 @@ public class CreateAzureStorageBlobContainerResponse : ICreateAzureResourceRespo
     return new StorageTestBlobContainer(
       _client,
       _response.Value.Name,
-      _cancellationToken,
-      _connectionString);
+      _connectionString, 
+      _logger,
+      _cancellationToken);
   }
 }

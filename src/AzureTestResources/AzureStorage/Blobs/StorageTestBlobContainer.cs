@@ -1,11 +1,13 @@
 ﻿using Azure.Storage.Blobs;
 using AzureTestResources.Common;
+using Microsoft.Extensions.Logging;
 
 namespace AzureTestResources.AzureStorage.Blobs;
 
 public class StorageTestBlobContainer : IAzureResourceApi
 {
   private readonly BlobServiceClient _client;
+  private readonly ILogger _logger;
   private readonly CancellationToken _ct;
 
   public string ConnectionString { get; }
@@ -14,10 +16,12 @@ public class StorageTestBlobContainer : IAzureResourceApi
   public StorageTestBlobContainer(
     BlobServiceClient client,
     string name,
-    CancellationToken ct,
-    string connectionString)
+    string connectionString,
+    ILogger logger,
+    CancellationToken ct)
   {
     _client = client;
+    _logger = logger;
     _ct = ct;
     ConnectionString = connectionString;
     Name = name;
@@ -25,6 +29,8 @@ public class StorageTestBlobContainer : IAzureResourceApi
 
   public async ValueTask DisposeAsync()
   {
+    _logger.Deleting("blob container", Name);
     await _client.DeleteBlobContainerAsync(Name, cancellationToken: _ct);
+    _logger.Deleted("blob container", Name);
   }
 }

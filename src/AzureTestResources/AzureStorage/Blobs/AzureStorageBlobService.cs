@@ -37,6 +37,7 @@ public class AzureStorageBlobService : IAzureService<StorageTestBlobContainer>
         resourceName,
         _client,
         _connectionString,
+        _logger,
         _cancellationToken);
       return response;
     }

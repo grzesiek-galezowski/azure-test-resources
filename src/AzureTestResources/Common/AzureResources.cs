@@ -7,6 +7,7 @@ public static class AzureResources
 {
   public static async Task<TApi> CreateApiToUnderlyingResource<TApi>(
     IAzureService<TApi> service,
+    string resourceName,
     ILogger logger) where TApi : IAzureResourceApi
   {
     var response = await Policy
@@ -19,7 +20,9 @@ public static class AzureResources
         })
       .ExecuteAsync(async () => await service.CreateResourceInstance());
     response.AssertResourceCreated();
-    return response.CreateResourceApi();
+    var apiToUnderlyingResource = response.CreateResourceApi();
+    logger.Created(resourceName, apiToUnderlyingResource.Name);
+    return apiToUnderlyingResource;
   }
 
   public static readonly TimeSpan DefaultZombieToleranceForEmulator = TimeSpan.FromMinutes(1);

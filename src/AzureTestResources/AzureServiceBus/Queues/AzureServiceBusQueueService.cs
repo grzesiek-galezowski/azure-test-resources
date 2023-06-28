@@ -1,6 +1,7 @@
 using Azure.Messaging.ServiceBus;
 using Azure.Messaging.ServiceBus.Administration;
 using AzureTestResources.Common;
+using Microsoft.Extensions.Logging;
 
 namespace AzureTestResources.AzureServiceBus.Queues;
 
@@ -11,12 +12,14 @@ public class AzureServiceBusQueueService : IAzureService<ServiceBusTestQueue>
   private readonly string _namePrefix;
   private readonly string _connectionString;
   private readonly TimeSpan _autoDeleteOnIdle;
+  private readonly ILogger _logger;
 
   public AzureServiceBusQueueService(
     string connectionString,
     string namePrefix,
     ServiceBusAdministrationClient serviceBusClient,
     TimeSpan autoDeleteOnIdle,
+    ILogger logger,
     CancellationToken cancellationToken)
   {
     _connectionString = connectionString;
@@ -24,6 +27,7 @@ public class AzureServiceBusQueueService : IAzureService<ServiceBusTestQueue>
     _cancellationToken = cancellationToken;
     _serviceBusClient = serviceBusClient;
     _autoDeleteOnIdle = autoDeleteOnIdle;
+    _logger = logger;
   }
 
   public async Task<ICreateAzureResourceResponse<ServiceBusTestQueue>> CreateResourceInstance()
@@ -32,7 +36,8 @@ public class AzureServiceBusQueueService : IAzureService<ServiceBusTestQueue>
     {
       var queueName = TestResourceNamingConvention.GenerateResourceId(_namePrefix);
 
-      Console.WriteLine(SomeLogging.Creating($"service bus queue", queueName)); //bug
+      _logger.Creating("service bus queue", queueName);
+
       var sdkResponse = await _serviceBusClient.CreateQueueAsync(
         new CreateQueueOptions(queueName)
         {
@@ -40,11 +45,12 @@ public class AzureServiceBusQueueService : IAzureService<ServiceBusTestQueue>
         }, _cancellationToken);
       var response = new CreateAzureServiceBusQueueResponse(
         _connectionString,
-        _cancellationToken,
         _serviceBusClient,
         sdkResponse,
-        queueName);
-      Console.WriteLine(SomeLogging.Created("Queue", queueName)); //bug
+        queueName, 
+        _logger,
+        _cancellationToken);
+      
       return response;
     }
     catch (ServiceBusException ex) when (RetryConditions.RequiresRetry(ex))

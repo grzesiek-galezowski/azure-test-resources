@@ -1,32 +1,35 @@
 ﻿using Azure.Messaging.ServiceBus.Administration;
 using AzureTestResources.Common;
+using Microsoft.Extensions.Logging;
 
 namespace AzureTestResources.AzureServiceBus.Queues;
 
 public class ServiceBusTestQueue : IAzureResourceApi
 {
   private readonly ServiceBusAdministrationClient _serviceBusClient;
-  private readonly string _queueName;
+  private readonly ILogger _logger;
   private readonly CancellationToken _cancellationToken;
   public string ConnectionString { get; }
-  public string Name => _queueName;
+  public string Name { get; }
 
   public ServiceBusTestQueue(
     ServiceBusAdministrationClient serviceBusClient,
     string queueName,
     string connectionString,
+    ILogger logger,
     CancellationToken cancellationToken)
   {
     ConnectionString = connectionString;
     _serviceBusClient = serviceBusClient;
-    _queueName = queueName;
+    Name = queueName;
+    _logger = logger;
     _cancellationToken = cancellationToken;
   }
 
   public async ValueTask DisposeAsync()
   {
-    Console.WriteLine(SomeLogging.Deleting("queue", _queueName));
-    await _serviceBusClient.DeleteQueueAsync(_queueName, cancellationToken: _cancellationToken);
-    Console.WriteLine(SomeLogging.Deleted("Queue", _queueName));
+    _logger.Deleting("queue", Name);
+    await _serviceBusClient.DeleteQueueAsync(Name, cancellationToken: _cancellationToken);
+    _logger.Deleted("Queue", Name);
   }
 }

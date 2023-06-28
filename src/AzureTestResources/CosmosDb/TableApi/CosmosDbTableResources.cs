@@ -15,7 +15,7 @@ public static class CosmosDbTableResources
       logger,
       new TableServiceClient(config.ConnectionString));
 
-    var api = await AzureResources.CreateApiToUnderlyingResource(cosmosDbTableService, logger);
+    var api = await AzureResources.CreateApiToUnderlyingResource(cosmosDbTableService, "table", logger);
 
 
     return api;

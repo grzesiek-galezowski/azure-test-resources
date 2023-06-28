@@ -28,7 +28,8 @@ public static class CosmosDbResources
       new CancellationToken());
 
     var cosmosTestDatabase = await AzureResources.CreateApiToUnderlyingResource(
-      cosmosDbService,
+      cosmosDbService, 
+      "database", 
       logger);
 
     return cosmosTestDatabase;

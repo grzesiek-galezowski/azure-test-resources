@@ -48,7 +48,6 @@ public class AzureServiceBusTopicService : IAzureService<ServiceBusTestTopic>
         topicName,
         _logger, 
         _cancellationToken);
-      _logger.Created("topic", topicName);
       return response;
     }
     catch (ServiceBusException ex) when (RetryConditions.RequiresRetry(ex))

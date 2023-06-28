@@ -25,7 +25,7 @@ public static class ServiceBusTestResources
       logger,
       cancellationToken);
 
-    var instance = await AzureResources.CreateApiToUnderlyingResource(service, logger);
+    var instance = await AzureResources.CreateApiToUnderlyingResource(service, "topic", logger);
 
     return instance;
   }
@@ -40,9 +40,11 @@ public static class ServiceBusTestResources
       connectionString,
       namePrefix,
       new ServiceBusAdministrationClient(connectionString),
-      AutoDeleteOnIdle, cancellationToken);
+      AutoDeleteOnIdle, 
+      logger,
+      cancellationToken);
 
-    var instance = await AzureResources.CreateApiToUnderlyingResource(service, logger);
+    var instance = await AzureResources.CreateApiToUnderlyingResource(service, "queue", logger);
 
     return instance;
   }

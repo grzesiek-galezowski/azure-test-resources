@@ -35,7 +35,7 @@ public static partial class AzureStorageResources
         connectionString
       ), connectionString, ct);
 
-    return await AzureResources.CreateApiToUnderlyingResource(service, logger);
+    return await AzureResources.CreateApiToUnderlyingResource(service, "storage queue", logger);
   }
 }
 
@@ -52,10 +52,11 @@ public static partial class AzureStorageResources
     CancellationToken ct)
   {
     var service = new AzureStorageBlobService(
-      new BlobServiceClient(
-        connectionString
-      ), connectionString, ct);
+      new BlobServiceClient(connectionString), 
+      connectionString, 
+      logger,
+      ct);
 
-    return await AzureResources.CreateApiToUnderlyingResource(service, logger);
+    return await AzureResources.CreateApiToUnderlyingResource(service, "blob container", logger);
   }
 }

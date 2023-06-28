@@ -7,11 +7,10 @@ namespace AzureTestResources.AzureServiceBus.Topics;
 public class ServiceBusTestTopic : IAzureResourceApi
 {
   private readonly ServiceBusAdministrationClient _serviceBusClient;
-  private readonly string _topicName;
   private readonly CancellationToken _cancellationToken;
   private readonly ILogger _logger;
   public string ConnectionString { get; }
-  public string Name => _topicName;
+  public string Name { get; }
 
   public ServiceBusTestTopic(
     ServiceBusAdministrationClient serviceBusClient,
@@ -22,7 +21,7 @@ public class ServiceBusTestTopic : IAzureResourceApi
   {
     ConnectionString = connectionString;
     _serviceBusClient = serviceBusClient;
-    _topicName = topicName;
+    Name = topicName;
     _cancellationToken = cancellationToken;
     _logger = logger;
   }
@@ -30,7 +29,7 @@ public class ServiceBusTestTopic : IAzureResourceApi
   public async Task CreateSubscription(string name)
   {
     var response = await _serviceBusClient.CreateSubscriptionAsync(
-      _topicName,
+      Name,
       cancellationToken: _cancellationToken,
       subscriptionName: name);
 
@@ -39,7 +38,7 @@ public class ServiceBusTestTopic : IAzureResourceApi
       throw new InvalidOperationException("Could not create a subscription " + name);
     }
 
-    if (_topicName != response.Value.TopicName)
+    if (Name != response.Value.TopicName)
     {
       throw new InvalidOperationException("Naming mismatch");
     }
@@ -48,7 +47,7 @@ public class ServiceBusTestTopic : IAzureResourceApi
   public async ValueTask DisposeAsync()
   {
     _logger.Deleting("topic", Name);
-    await _serviceBusClient.DeleteTopicAsync(_topicName, cancellationToken: _cancellationToken);
+    await _serviceBusClient.DeleteTopicAsync(Name, cancellationToken: _cancellationToken);
     _logger.Deleted("topic", Name);
   }
 }

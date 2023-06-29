@@ -11,7 +11,7 @@ namespace AzureTestResourcesSpecification;
 public class AzureStorageBlobContainersSpecification
 {
   private readonly Lazy<Task> _deleteAllDatabases
-    = new(ZombieBlobContainerCleanup.DeleteZombieContainers);
+    = new(() => ZombieBlobContainerCleanup.DeleteZombieContainers(Logger()));
 
   [TestCase(1)]
   [TestCase(2)]
@@ -51,7 +51,7 @@ public class AzureStorageBlobContainersSpecification
 
     var messageText = "lol";
     await using var container = await AzureStorageResources.CreateBlobContainer(
-      new NUnitLogger("blob"), new CancellationToken());
+      Logger(), new CancellationToken());
     var containerClient = new BlobContainerClient(container.ConnectionString, container.Name);
 
     var blobClient = containerClient.GetBlobClient("myBlob");
@@ -61,6 +61,11 @@ public class AzureStorageBlobContainersSpecification
 
     var responseText = await GetStringFrom(response);
     Assert.AreEqual(messageText, responseText);
+  }
+
+  private static NUnitLogger Logger()
+  {
+    return new NUnitLogger("blob");
   }
 
   private static async Task Upload(string messageText, BlobClient blobClient)

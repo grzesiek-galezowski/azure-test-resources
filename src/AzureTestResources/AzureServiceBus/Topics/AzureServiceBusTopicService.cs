@@ -46,7 +46,7 @@ public class AzureServiceBusTopicService : IAzureService<ServiceBusTestTopic>
         _serviceBusClient,
         sdkResponse,
         topicName,
-        _logger, 
+        _logger,
         _cancellationToken);
       return response;
     }

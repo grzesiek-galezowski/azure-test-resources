@@ -8,7 +8,7 @@ namespace AzureTestResourcesSpecification;
 public class AzureStorageQueuesSpecification
 {
   private readonly Lazy<Task> _deleteAllQueues
-    = new(ZombieStorageQueueCleanup.DeleteZombieQueues);
+    = new(() => ZombieStorageQueueCleanup.DeleteZombieQueues(new NUnitLogger("storagequeue")));
 
   [TestCase(1)]
   [TestCase(2)]

@@ -52,8 +52,8 @@ public static partial class AzureStorageResources
     CancellationToken ct)
   {
     var service = new AzureStorageBlobService(
-      new BlobServiceClient(connectionString), 
-      connectionString, 
+      new BlobServiceClient(connectionString),
+      connectionString,
       logger,
       ct);
 

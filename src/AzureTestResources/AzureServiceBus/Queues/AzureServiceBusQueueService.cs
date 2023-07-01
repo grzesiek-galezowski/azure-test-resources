@@ -47,10 +47,10 @@ public class AzureServiceBusQueueService : IAzureService<ServiceBusTestQueue>
         _connectionString,
         _serviceBusClient,
         sdkResponse,
-        queueName, 
+        queueName,
         _logger,
         _cancellationToken);
-      
+
       return response;
     }
     catch (ServiceBusException ex) when (RetryConditions.RequiresRetry(ex))

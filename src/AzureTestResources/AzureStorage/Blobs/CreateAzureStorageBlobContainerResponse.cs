@@ -54,7 +54,7 @@ public class CreateAzureStorageBlobContainerResponse : ICreateAzureResourceRespo
     return new StorageTestBlobContainer(
       _client,
       _response.Value.Name,
-      _connectionString, 
+      _connectionString,
       _logger,
       _cancellationToken);
   }

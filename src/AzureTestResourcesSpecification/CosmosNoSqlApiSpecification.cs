@@ -7,7 +7,7 @@ namespace AzureTestResourcesSpecification;
 public class CosmosNoSqlApiSpecification
 {
   private readonly Lazy<Task> _deleteAllDatabases
-    = new(() => ZombieDatabaseCleanup.DeleteZombieDatabases(CosmosTestDatabaseConfig.Default()));
+    = new(() => ZombieDatabaseCleanup.DeleteZombieDatabases(CosmosTestDatabaseConfig.Default(), new NUnitLogger("test")));
 
   [TestCase(1)]
   [TestCase(2)]

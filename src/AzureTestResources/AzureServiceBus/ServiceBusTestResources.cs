@@ -21,7 +21,7 @@ public static class ServiceBusTestResources
       connectionString,
       namePrefix,
       new ServiceBusAdministrationClient(connectionString),
-      AutoDeleteOnIdle, 
+      AutoDeleteOnIdle,
       logger,
       cancellationToken);
 
@@ -40,7 +40,7 @@ public static class ServiceBusTestResources
       connectionString,
       namePrefix,
       new ServiceBusAdministrationClient(connectionString),
-      AutoDeleteOnIdle, 
+      AutoDeleteOnIdle,
       logger,
       cancellationToken);
 

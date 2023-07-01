@@ -12,6 +12,12 @@ public static class ZombieTableCleanup
     await DeleteZombieTables(config, AzureResources.DefaultZombieToleranceForEmulator);
   }
 
+  /// <summary>
+  /// This removal is slightly different because tables, at least on an emulator, take forever to delete.
+  /// </summary>
+  /// <param name="config"></param>
+  /// <param name="tolerance"></param>
+  /// <returns></returns>
   private static async Task DeleteZombieTables(CosmosTestTableConfig config, TimeSpan tolerance)
   {
     var client = new TableServiceClient(config.ConnectionString);

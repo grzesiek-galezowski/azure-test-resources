@@ -17,6 +17,7 @@ public class ZombieResourceCleanupLoop
 
   public async Task Execute()
   {
+    //bug parallelize this?
     foreach (var resource in await _createdResourcesPool.LoadResources())
     {
       try

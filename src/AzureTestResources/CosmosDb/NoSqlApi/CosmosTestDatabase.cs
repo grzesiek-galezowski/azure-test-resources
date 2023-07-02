@@ -34,12 +34,14 @@ public class CosmosTestDatabase : IAzureResourceApi
   {
     foreach (var container in _containers)
     {
-      _logger.LogInformation($"Deleting container {container.Id}");
+      _logger.Deleting("container", _database.Id);
       await container.DeleteContainerAsync(cancellationToken: _cancellationToken);
+      _logger.Deleted("container", _database.Id);
     }
 
-    _logger.LogInformation($"Deleting database {_database.Id}"); //bug more logging
+    _logger.Deleting("database", _database.Id);
     await _database.DeleteAsync(cancellationToken: _cancellationToken);
+    _logger.Deleted("database", _database.Id);
   }
 
   public async Task CreateContainer(string containerName, string partitionKey)

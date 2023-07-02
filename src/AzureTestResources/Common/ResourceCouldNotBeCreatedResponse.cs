@@ -14,7 +14,7 @@ public class ResourceCouldNotBeCreatedResponse<TApi> : ICreateAzureResourceRespo
 
   public void AssertResourceCreated()
   {
-    throw _rootCause; //bug wrap
+    throw new ResourceCouldNotBeCreateException(_rootCause);
   }
 
   public bool ShouldBeRetried() => _shouldBeRetried;
@@ -26,6 +26,6 @@ public class ResourceCouldNotBeCreatedResponse<TApi> : ICreateAzureResourceRespo
 
   public TApi CreateResourceApi()
   {
-    throw _rootCause; //bug wrap
+    throw new ResourceCouldNotBeCreateException(_rootCause);
   }
 }

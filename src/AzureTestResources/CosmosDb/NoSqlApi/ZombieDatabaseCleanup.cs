@@ -16,7 +16,7 @@ public static class ZombieDatabaseCleanup
   {
     using var client = CosmosClientFactory.CreateCosmosClient(config);
 
-    await new ZombieResourceCleanupLoop(new CreatedDatabasesPool(client), tolerance, logger)
+    await new ZombieResourceCleanupLoop(new CreatedDatabasesPool(client, logger), tolerance, logger)
       .Execute();
   }
 }

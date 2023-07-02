@@ -29,6 +29,10 @@ public class ZombieResourceCleanupLoop
           await resource.DeleteAsync();
           _logger.LogInformation($"{resource.Name} deleted successfully.");
         }
+        else
+        {
+          _logger.LogInformation($"{resource.Name} is not a zombie resource. Skipped.");
+        }
       }
       catch (ResourceCouldNotBeDeletedException)
       {

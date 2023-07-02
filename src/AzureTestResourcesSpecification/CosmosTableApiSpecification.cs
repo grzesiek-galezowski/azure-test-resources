@@ -7,7 +7,7 @@ namespace AzureTestResourcesSpecification;
 internal class CosmosTableApiSpecification
 {
   private static readonly Lazy<Task> CleanupZombieTablesOnce =
-    new(() => ZombieTableCleanup.DeleteZombieTables(CosmosTestTableConfig.Default()));
+    new(() => ZombieTableCleanup.DeleteZombieTables(CosmosTestTableConfig.Default(), new NUnitLogger("table")));
 
   [TestCase(1)]
   [TestCase(2)]

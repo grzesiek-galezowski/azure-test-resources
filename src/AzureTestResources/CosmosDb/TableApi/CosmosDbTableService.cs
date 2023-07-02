@@ -33,6 +33,7 @@ public class CosmosDbTableService : IAzureService<CosmosTestTable>
     try
     {
       var tableName = TestResourceNamingConvention.GenerateResourceId(Config.NamePrefix);
+      Logger.Creating("table", tableName);
       var response = await Client.CreateTableAsync(tableName);
       return new CreateCosmosTableResponse(Config, Logger, response, Client, tableName);
     }

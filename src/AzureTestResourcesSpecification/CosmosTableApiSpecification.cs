@@ -44,9 +44,10 @@ internal class CosmosTableApiSpecification
   public async Task ShouldCreateTestTable(int testNo)
   {
     await CleanupZombieTablesOnce.Value;
+    var cancellationToken = new CancellationToken();
 
     //GIVEN
-    await using var table = await CosmosDbTableResources.CreateTable(new NUnitLogger("table"));
+    await using var table = await CosmosDbTableResources.CreateTable(new NUnitLogger("table"), cancellationToken);
 
     //WHEN
     var tableClient = new TableServiceClient(table.ConnectionString);
@@ -54,7 +55,7 @@ internal class CosmosTableApiSpecification
     {
       PartitionKey = testNo.ToString(),
       RowKey = "lol"
-    });
+    }, cancellationToken: cancellationToken);
 
     //THEN
   }

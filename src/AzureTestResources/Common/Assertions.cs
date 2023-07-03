@@ -3,7 +3,7 @@ using Azure;
 
 namespace AzureTestResources.Common;
 
-static internal class Assertions
+public static class Assertions
 {
   public static void AssertIsHttpCreated<T>(NullableResponse<T> response, string resourceType)
   {

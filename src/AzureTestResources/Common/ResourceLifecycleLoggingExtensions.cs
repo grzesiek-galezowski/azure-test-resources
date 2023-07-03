@@ -2,7 +2,7 @@ using Microsoft.Extensions.Logging;
 
 namespace AzureTestResources.Common;
 
-internal static class ResourceLifecycleLoggingExtensions
+public static class ResourceLifecycleLoggingExtensions
 {
   public static void Deleted(this ILogger logger, string resourceType, string resourceName)
   {

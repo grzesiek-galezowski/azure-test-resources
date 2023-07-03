@@ -1,5 +1,5 @@
 ﻿using Azure.Messaging.ServiceBus;
-using AzureTestResources.AzureServiceBus;
+using AzureTestResources.Messaging.ServiceBus;
 using Extensions.Logging.NUnit;
 
 namespace AzureTestResourcesSpecification;

@@ -1,4 +1,4 @@
-using AzureTestResources.CosmosDb.NoSqlApi;
+using AzureTestResources.Cosmos;
 using Extensions.Logging.NUnit;
 using Microsoft.Azure.Cosmos;
 

@@ -5,7 +5,15 @@ VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureTestResourcesSpecification", "AzureTestResourcesSpecification\AzureTestResourcesSpecification.csproj", "{09DB626C-7E85-447A-8A2A-B0B4B92F48B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureTestResources", "AzureTestResources\AzureTestResources.csproj", "{C693B0A6-1B39-4145-8762-62696EAF618F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureTestResources", "AzureTestResources\AzureTestResources.csproj", "{C693B0A6-1B39-4145-8762-62696EAF618F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureTestResources.Data.Tables", "AzureTestResources.Data.Tables\AzureTestResources.Data.Tables.csproj", "{D447AD9E-EA4D-4EFC-9989-85F29B899D77}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureTestResources.Messaging.ServiceBus", "AzureTestResources.Messaging.ServiceBus\AzureTestResources.Messaging.ServiceBus.csproj", "{92EAF5E0-1FC1-49DF-8E5F-FB59919AE4B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureTestResources.Storage", "AzureTestResources.Storage\AzureTestResources.Storage.csproj", "{208504F8-D638-4F47-88D1-689F2630A388}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureTestResources.Cosmos", "AzureTestResources.Cosmos\AzureTestResources.Cosmos.csproj", "{27114EC6-3E19-4DCE-AE73-A99E727155CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +29,22 @@ Global
 		{C693B0A6-1B39-4145-8762-62696EAF618F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C693B0A6-1B39-4145-8762-62696EAF618F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C693B0A6-1B39-4145-8762-62696EAF618F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D447AD9E-EA4D-4EFC-9989-85F29B899D77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D447AD9E-EA4D-4EFC-9989-85F29B899D77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D447AD9E-EA4D-4EFC-9989-85F29B899D77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D447AD9E-EA4D-4EFC-9989-85F29B899D77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92EAF5E0-1FC1-49DF-8E5F-FB59919AE4B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92EAF5E0-1FC1-49DF-8E5F-FB59919AE4B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92EAF5E0-1FC1-49DF-8E5F-FB59919AE4B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92EAF5E0-1FC1-49DF-8E5F-FB59919AE4B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{208504F8-D638-4F47-88D1-689F2630A388}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{208504F8-D638-4F47-88D1-689F2630A388}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{208504F8-D638-4F47-88D1-689F2630A388}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{208504F8-D638-4F47-88D1-689F2630A388}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27114EC6-3E19-4DCE-AE73-A99E727155CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27114EC6-3E19-4DCE-AE73-A99E727155CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27114EC6-3E19-4DCE-AE73-A99E727155CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27114EC6-3E19-4DCE-AE73-A99E727155CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

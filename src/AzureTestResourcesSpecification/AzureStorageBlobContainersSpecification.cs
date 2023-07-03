@@ -2,8 +2,8 @@
 using Azure;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
-using AzureTestResources.AzureStorage;
-using AzureTestResources.AzureStorage.Blobs;
+using AzureTestResources.Storage;
+using AzureTestResources.Storage.Blobs;
 using Extensions.Logging.NUnit;
 
 namespace AzureTestResourcesSpecification;

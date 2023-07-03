@@ -25,6 +25,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AzureTestResources.Cosmos\AzureTestResources.Cosmos.csproj" />
+    <ProjectReference Include="..\AzureTestResources.Data.Tables\AzureTestResources.Data.Tables.csproj" />
+    <ProjectReference Include="..\AzureTestResources.Messaging.ServiceBus\AzureTestResources.Messaging.ServiceBus.csproj" />
+    <ProjectReference Include="..\AzureTestResources.Storage\AzureTestResources.Storage.csproj" />
     <ProjectReference Include="..\AzureTestResources\AzureTestResources.csproj" />
   </ItemGroup>
 

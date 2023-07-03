@@ -1,6 +1,6 @@
 ﻿using Azure.Storage.Queues;
-using AzureTestResources.AzureStorage;
-using AzureTestResources.AzureStorage.Queues;
+using AzureTestResources.Storage;
+using AzureTestResources.Storage.Queues;
 using Extensions.Logging.NUnit;
 
 namespace AzureTestResourcesSpecification;

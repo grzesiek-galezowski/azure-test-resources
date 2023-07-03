@@ -17,5 +17,9 @@
     <PackageReference Include="Polly" Version="7.2.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
 
 </Project>

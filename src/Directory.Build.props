@@ -1,0 +1,28 @@
+<Project>
+  <PropertyGroup>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <CompanyName>TddXt</CompanyName>
+    <Company>$(CompanyName)</Company>
+    <PackageId>$(CompanyName).$(MSBuildProjectName)</PackageId>
+    <Authors>Grzegorz Gałęzowski</Authors>
+    <Product>$(CompanyName).$(MSBuildProjectName)</Product>
+    <AssemblyName>$(CompanyName).$(MSBuildProjectName)</AssemblyName>
+    <Description>A package for creating temporary resources for testing.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/MyCompany/MyRepository</RepositoryUrl>
+
+
+    <PackageProjectUrl>https://github.com/grzesiek-galezowski/azure-test-resources</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/grzesiek-galezowski/azure-test-resources</RepositoryUrl>
+    <RepositoryType>github</RepositoryType>
+    <PackageTags>testing azure</PackageTags>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <WarningsAsErrors>nullable</WarningsAsErrors>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+</Project>

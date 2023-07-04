@@ -17,6 +17,8 @@ class Build : NukeBuild
   [Solution]
   readonly Solution Solution;
 
+  const string VersionPrefix = "0.1.0";
+
   Target Clean => _ => _
     .Before(Restore)
     .Executes(() =>
@@ -38,7 +40,8 @@ class Build : NukeBuild
       DotNetTasks.DotNetBuild(s => s
         .SetProjectFile(Solution)
         .SetConfiguration(Configuration.Release)
-        .EnableNoRestore());
+        .EnableNoRestore()
+        .SetVersionPrefix(VersionPrefix));
     });
 
   Target Test => _ => _
@@ -60,6 +63,9 @@ class Build : NukeBuild
         .SetConfiguration(Configuration.Release)
         .EnableNoRestore()
         .EnableNoBuild()
-        .EnableIncludeSymbols());
+        .EnableIncludeSymbols()
+        .SetVersionPrefix(VersionPrefix)
+        .SetSymbolPackageFormat(DotNetSymbolPackageFormat.snupkg)
+        .SetOutputDirectory(Solution.Directory / "Nugets"));
     });
 }

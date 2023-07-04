@@ -15,12 +15,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureTestResources.Storage"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureTestResources.Cosmos", "AzureTestResources.Cosmos\AzureTestResources.Cosmos.csproj", "{27114EC6-3E19-4DCE-AE73-A99E727155CD}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "..\build\_build.csproj", "{5A9E8B59-330B-4BF9-B6DC-7753BFCB4701}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5A9E8B59-330B-4BF9-B6DC-7753BFCB4701}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A9E8B59-330B-4BF9-B6DC-7753BFCB4701}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09DB626C-7E85-447A-8A2A-B0B4B92F48B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{09DB626C-7E85-447A-8A2A-B0B4B92F48B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09DB626C-7E85-447A-8A2A-B0B4B92F48B9}.Release|Any CPU.ActiveCfg = Release|Any CPU

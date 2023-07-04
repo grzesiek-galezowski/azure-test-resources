@@ -1,7 +1,10 @@
+using GlobExpressions;
 using Nuke.Common;
 using Nuke.Common.CI.GitHubActions;
+using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tools.DotNet;
+using Nuke.Common.Utilities.Collections;
 
 [GitHubActions(
   "continuous",
@@ -16,6 +19,8 @@ class Build : NukeBuild
 
   [Solution]
   readonly Solution Solution;
+
+  AbsolutePath ArtifactsDirectory => Solution.Directory / "Nugets";
 
   const string VersionPrefix = "0.1.0";
 
@@ -66,6 +71,17 @@ class Build : NukeBuild
         .EnableIncludeSymbols()
         .SetVersionPrefix(VersionPrefix)
         .SetSymbolPackageFormat(DotNetSymbolPackageFormat.snupkg)
-        .SetOutputDirectory(Solution.Directory / "Nugets"));
+        .SetOutputDirectory(ArtifactsDirectory));
+    });
+
+  Target Push => _ => _
+    .DependsOn(Pack)
+    .Executes(() =>
+    {
+      ArtifactsDirectory.GlobFiles("*.nupkg", "*.snupkg").ForEach(path =>
+      {
+        DotNetTasks.DotNetNuGetPush(s => s.SetTargetPath(path)
+          .SetSource("https://api.nuget.org/v3/index.json"));
+      });
     });
 }

@@ -1,10 +1,10 @@
 using Azure.Messaging.ServiceBus.Administration;
-using AzureTestResources.Common;
-using AzureTestResources.Messaging.ServiceBus.Queues;
-using AzureTestResources.Messaging.ServiceBus.Topics;
 using Microsoft.Extensions.Logging;
+using TddXt.AzureTestResources.Common;
+using TddXt.AzureTestResources.Messaging.ServiceBus.Queues;
+using TddXt.AzureTestResources.Messaging.ServiceBus.Topics;
 
-namespace AzureTestResources.Messaging.ServiceBus;
+namespace TddXt.AzureTestResources.Messaging.ServiceBus;
 
 public static class ServiceBusTestResources
 {

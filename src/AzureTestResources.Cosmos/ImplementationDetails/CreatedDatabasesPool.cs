@@ -1,8 +1,8 @@
-using AzureTestResources.Common;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
+using TddXt.AzureTestResources.Common;
 
-namespace AzureTestResources.Cosmos.ImplementationDetails;
+namespace TddXt.AzureTestResources.Cosmos.ImplementationDetails;
 
 public class CreatedDatabasesPool : ICreatedResourcesPool
 {

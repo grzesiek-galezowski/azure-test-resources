@@ -1,9 +1,9 @@
 using Azure.Messaging.ServiceBus;
 using Azure.Messaging.ServiceBus.Administration;
-using AzureTestResources.Common;
 using Microsoft.Extensions.Logging;
+using TddXt.AzureTestResources.Common;
 
-namespace AzureTestResources.Messaging.ServiceBus.Topics;
+namespace TddXt.AzureTestResources.Messaging.ServiceBus.Topics;
 
 public class AzureServiceBusTopicService : IAzureService<ServiceBusTestTopic>
 {

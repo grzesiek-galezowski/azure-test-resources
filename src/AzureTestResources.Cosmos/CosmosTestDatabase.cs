@@ -1,9 +1,9 @@
-using AzureTestResources.Common;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
 using Polly.Retry;
+using TddXt.AzureTestResources.Common;
 
-namespace AzureTestResources.Cosmos;
+namespace TddXt.AzureTestResources.Cosmos;
 
 public class CosmosTestDatabase : IAzureResourceApi
 {

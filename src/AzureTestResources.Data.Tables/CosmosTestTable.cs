@@ -1,8 +1,8 @@
 ﻿using Azure.Data.Tables;
-using AzureTestResources.Common;
 using Microsoft.Extensions.Logging;
+using TddXt.AzureTestResources.Common;
 
-namespace AzureTestResources.Data.Tables;
+namespace TddXt.AzureTestResources.Data.Tables;
 
 public class CosmosTestTable : IAzureResourceApi
 {

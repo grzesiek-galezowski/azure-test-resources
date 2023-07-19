@@ -1,4 +1,4 @@
-namespace AzureTestResources.Common;
+namespace TddXt.AzureTestResources.Common;
 
 public class ResourceCouldNotBeCreatedResponse<TApi> : ICreateAzureResourceResponse<TApi>
   where TApi : IAzureResourceApi
@@ -14,7 +14,7 @@ public class ResourceCouldNotBeCreatedResponse<TApi> : ICreateAzureResourceRespo
 
   public void AssertResourceCreated()
   {
-    throw new ResourceCouldNotBeCreateException(_rootCause);
+    throw new ResourceCouldNotBeCreatedException(_rootCause);
   }
 
   public bool ShouldBeRetried() => _shouldBeRetried;
@@ -26,6 +26,6 @@ public class ResourceCouldNotBeCreatedResponse<TApi> : ICreateAzureResourceRespo
 
   public TApi CreateResourceApi()
   {
-    throw new ResourceCouldNotBeCreateException(_rootCause);
+    throw new ResourceCouldNotBeCreatedException(_rootCause);
   }
 }

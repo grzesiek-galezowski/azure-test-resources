@@ -1,9 +1,9 @@
-using AzureTestResources.Common;
-using AzureTestResources.Cosmos.ImplementationDetails;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
+using TddXt.AzureTestResources.Common;
+using TddXt.AzureTestResources.Cosmos.ImplementationDetails;
 
-namespace AzureTestResources.Cosmos;
+namespace TddXt.AzureTestResources.Cosmos;
 
 public class CreateCosmosDatabaseResponse : ICreateAzureResourceResponse<CosmosTestDatabase>
 {

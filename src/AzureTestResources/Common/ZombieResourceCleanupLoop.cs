@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Logging;
 
-namespace AzureTestResources.Common;
+namespace TddXt.AzureTestResources.Common;
 
 public class ZombieResourceCleanupLoop
 {

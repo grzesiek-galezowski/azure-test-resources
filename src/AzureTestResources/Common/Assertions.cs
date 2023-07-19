@@ -1,7 +1,7 @@
 using System.Net;
 using Azure;
 
-namespace AzureTestResources.Common;
+namespace TddXt.AzureTestResources.Common;
 
 public static class Assertions
 {

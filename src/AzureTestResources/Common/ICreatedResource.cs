@@ -1,4 +1,4 @@
-namespace AzureTestResources.Common;
+namespace TddXt.AzureTestResources.Common;
 
 public interface ICreatedResource
 {

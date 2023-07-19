@@ -2,11 +2,11 @@
 using Azure;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
-using AzureTestResources.Storage;
-using AzureTestResources.Storage.Blobs;
 using Extensions.Logging.NUnit;
+using TddXt.AzureTestResources.Storage;
+using TddXt.AzureTestResources.Storage.Blobs;
 
-namespace AzureTestResourcesSpecification;
+namespace TddXt.AzureTestResourcesSpecification;
 
 public class AzureStorageBlobContainersSpecification
 {

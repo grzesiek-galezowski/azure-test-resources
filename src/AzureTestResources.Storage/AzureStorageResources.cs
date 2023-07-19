@@ -1,11 +1,11 @@
 using Azure.Storage.Blobs;
 using Azure.Storage.Queues;
-using AzureTestResources.Common;
-using AzureTestResources.Storage.Blobs;
-using AzureTestResources.Storage.Queues;
 using Microsoft.Extensions.Logging;
+using TddXt.AzureTestResources.Common;
+using TddXt.AzureTestResources.Storage.Blobs;
+using TddXt.AzureTestResources.Storage.Queues;
 
-namespace AzureTestResources.Storage;
+namespace TddXt.AzureTestResources.Storage;
 
 public static partial class AzureStorageResources
 {

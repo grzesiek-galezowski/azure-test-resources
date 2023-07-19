@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace AzureTestResources.Common;
+namespace TddXt.AzureTestResources.Common;
 
 public static class TestResourceNamingConvention
 {

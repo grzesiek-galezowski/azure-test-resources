@@ -1,8 +1,8 @@
 ﻿using Azure.Data.Tables;
-using AzureTestResources.Data.Tables;
 using Extensions.Logging.NUnit;
+using TddXt.AzureTestResources.Data.Tables;
 
-namespace AzureTestResourcesSpecification;
+namespace TddXt.AzureTestResourcesSpecification;
 
 internal class CosmosTableApiSpecification
 {

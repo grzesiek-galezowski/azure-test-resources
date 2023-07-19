@@ -1,8 +1,8 @@
-using AzureTestResources.Cosmos;
 using Extensions.Logging.NUnit;
 using Microsoft.Azure.Cosmos;
+using TddXt.AzureTestResources.Cosmos;
 
-namespace AzureTestResourcesSpecification;
+namespace TddXt.AzureTestResourcesSpecification;
 
 public class CosmosNoSqlApiSpecification
 {

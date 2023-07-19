@@ -1,6 +1,6 @@
 using Microsoft.Azure.Cosmos;
 
-namespace AzureTestResources.Cosmos.ImplementationDetails;
+namespace TddXt.AzureTestResources.Cosmos.ImplementationDetails;
 
 public static class DatabaseInformation
 {

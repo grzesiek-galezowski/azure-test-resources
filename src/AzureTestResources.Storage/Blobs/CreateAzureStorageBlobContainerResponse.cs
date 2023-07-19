@@ -1,10 +1,10 @@
 using System.Net;
 using Azure;
 using Azure.Storage.Blobs;
-using AzureTestResources.Common;
 using Microsoft.Extensions.Logging;
+using TddXt.AzureTestResources.Common;
 
-namespace AzureTestResources.Storage.Blobs;
+namespace TddXt.AzureTestResources.Storage.Blobs;
 
 public class CreateAzureStorageBlobContainerResponse : ICreateAzureResourceResponse<StorageTestBlobContainer>
 {

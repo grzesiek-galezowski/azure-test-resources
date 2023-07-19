@@ -2,9 +2,9 @@ using System.Net;
 using Azure;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
-using AzureTestResources.Common;
+using TddXt.AzureTestResources.Common;
 
-namespace AzureTestResources.Storage.Blobs;
+namespace TddXt.AzureTestResources.Storage.Blobs;
 
 public class CreatedBlobContainer : ICreatedResource
 {

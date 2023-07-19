@@ -2,10 +2,10 @@ using System.Net;
 using Azure;
 using Azure.Storage.Queues;
 using Azure.Storage.Queues.Models;
-using AzureTestResources.Common;
 using Microsoft.Extensions.Logging;
+using TddXt.AzureTestResources.Common;
 
-namespace AzureTestResources.Storage.Queues;
+namespace TddXt.AzureTestResources.Storage.Queues;
 
 public class ZombieStorageQueueCleanup
 {

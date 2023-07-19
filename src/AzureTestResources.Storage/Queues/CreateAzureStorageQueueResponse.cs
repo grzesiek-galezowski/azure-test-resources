@@ -1,9 +1,9 @@
 using System.Net;
 using Azure;
 using Azure.Storage.Queues;
-using AzureTestResources.Common;
+using TddXt.AzureTestResources.Common;
 
-namespace AzureTestResources.Storage.Queues;
+namespace TddXt.AzureTestResources.Storage.Queues;
 
 public class CreateAzureStorageQueueResponse : ICreateAzureResourceResponse<StorageTestQueue>
 {

@@ -1,7 +1,7 @@
 using Azure.Storage.Blobs;
-using AzureTestResources.Common;
+using TddXt.AzureTestResources.Common;
 
-namespace AzureTestResources.Storage.Blobs;
+namespace TddXt.AzureTestResources.Storage.Blobs;
 
 public class CreatedBlobContainersPool : ICreatedResourcesPool
 {

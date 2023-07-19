@@ -1,9 +1,9 @@
 ﻿using Azure.Storage.Queues;
-using AzureTestResources.Storage;
-using AzureTestResources.Storage.Queues;
 using Extensions.Logging.NUnit;
+using TddXt.AzureTestResources.Storage;
+using TddXt.AzureTestResources.Storage.Queues;
 
-namespace AzureTestResourcesSpecification;
+namespace TddXt.AzureTestResourcesSpecification;
 
 public class AzureStorageQueuesSpecification
 {

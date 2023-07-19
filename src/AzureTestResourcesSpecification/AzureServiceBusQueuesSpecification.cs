@@ -1,8 +1,8 @@
 ﻿using Azure.Messaging.ServiceBus;
-using AzureTestResources.Messaging.ServiceBus;
 using Extensions.Logging.NUnit;
+using TddXt.AzureTestResources.Messaging.ServiceBus;
 
-namespace AzureTestResourcesSpecification;
+namespace TddXt.AzureTestResourcesSpecification;
 
 public class AzureServiceBusQueuesSpecification
 {

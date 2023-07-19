@@ -1,8 +1,8 @@
-using AzureTestResources.Common;
-using AzureTestResources.Cosmos.ImplementationDetails;
 using Microsoft.Extensions.Logging;
+using TddXt.AzureTestResources.Common;
+using TddXt.AzureTestResources.Cosmos.ImplementationDetails;
 
-namespace AzureTestResources.Cosmos;
+namespace TddXt.AzureTestResources.Cosmos;
 
 public static class CosmosDbResources
 {

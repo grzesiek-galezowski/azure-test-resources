@@ -1,7 +1,7 @@
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Fluent;
 
-namespace AzureTestResources.Cosmos.ImplementationDetails;
+namespace TddXt.AzureTestResources.Cosmos.ImplementationDetails;
 
 public static class CosmosClientFactory
 {

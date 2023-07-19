@@ -1,4 +1,4 @@
-﻿namespace AzureTestResources.Data.Tables;
+﻿namespace TddXt.AzureTestResources.Data.Tables;
 
 public record CosmosTestTableConfig(string ConnectionString, string NamePrefix)
 {

@@ -1,10 +1,10 @@
 ﻿using Azure;
 using Azure.Data.Tables;
 using Azure.Data.Tables.Models;
-using AzureTestResources.Common;
 using Microsoft.Extensions.Logging;
+using TddXt.AzureTestResources.Common;
 
-namespace AzureTestResources.Data.Tables;
+namespace TddXt.AzureTestResources.Data.Tables;
 
 public class CreateCosmosTableResponse : ICreateAzureResourceResponse<CosmosTestTable>
 {

@@ -1,6 +1,6 @@
 using Azure.Messaging.ServiceBus;
 
-namespace AzureTestResources.Messaging.ServiceBus;
+namespace TddXt.AzureTestResources.Messaging.ServiceBus;
 
 internal static class RetryConditions
 {

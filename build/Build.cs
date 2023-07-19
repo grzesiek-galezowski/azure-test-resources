@@ -22,7 +22,7 @@ class Build : NukeBuild
 
   AbsolutePath ArtifactsDirectory => Solution.Directory / "Nugets";
 
-  const string VersionPrefix = "0.1.0";
+  const string VersionPrefix = "0.2.0";
 
   Target Clean => _ => _
     .Before(Restore)
@@ -78,7 +78,7 @@ class Build : NukeBuild
     .DependsOn(Pack)
     .Executes(() =>
     {
-      ArtifactsDirectory.GlobFiles("*.nupkg", "*.snupkg").ForEach(path =>
+      ArtifactsDirectory.GlobFiles($"*{VersionPrefix}.nupkg", $"*{VersionPrefix}.snupkg").ForEach(path =>
       {
         DotNetTasks.DotNetNuGetPush(s => s.SetTargetPath(path)
           .SetSource("https://api.nuget.org/v3/index.json"));

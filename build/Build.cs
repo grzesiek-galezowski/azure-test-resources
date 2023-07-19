@@ -1,3 +1,4 @@
+using System.IO;
 using GlobExpressions;
 using Nuke.Common;
 using Nuke.Common.CI.GitHubActions;
@@ -30,6 +31,10 @@ class Build : NukeBuild
     {
       DotNetTasks.DotNetClean(s => s.SetConfiguration(Configuration.Debug));
       DotNetTasks.DotNetClean(s => s.SetConfiguration(Configuration.Release));
+      if (Directory.Exists(ArtifactsDirectory))
+      {
+        Directory.Delete(ArtifactsDirectory, true);
+      }
     });
 
   Target Restore => _ => _

@@ -6,10 +6,6 @@ namespace TddXt.AzureTestResources.Cosmos;
 
 public static class CosmosDbResources
 {
-  //bug the cosmos db clients are not disposed. They need to be disposed in 
-  //both cases: error creating a database and success.
-  //One idea is to make this an object, sort of repository and make it own the cosmos client
-
   public static async Task<CosmosTestDatabase> CreateDatabase(ILogger log)
   {
     var config = CosmosTestDatabaseConfig.Default();
@@ -21,8 +17,9 @@ public static class CosmosDbResources
     CosmosTestDatabaseConfig config,
     ILogger logger)
   {
+    using var cosmosClient = CosmosClientFactory.CreateCosmosClient(config);
     var cosmosDbService = new CosmosDbService(
-      CosmosClientFactory.CreateCosmosClient(config),
+      cosmosClient,
       config,
       logger,
       new CancellationToken());

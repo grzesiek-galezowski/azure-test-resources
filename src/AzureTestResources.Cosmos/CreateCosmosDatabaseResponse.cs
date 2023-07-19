@@ -46,10 +46,10 @@ public class CreateCosmosDatabaseResponse : ICreateAzureResourceResponse<CosmosT
   public CosmosTestDatabase CreateResourceApi()
   {
     return new CosmosTestDatabase(
-      _databaseResponse.Database,
+      _databaseResponse.Database.Id,
       _logger,
       CosmosDbRequestPolicyFactory.CreateCreateSubResourcePolicy(_logger),
-      _config.ConnectionString,
-      _cancellationToken);
+      _cancellationToken,
+      _config);
   }
 }

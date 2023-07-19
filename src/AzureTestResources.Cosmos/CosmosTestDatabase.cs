@@ -2,6 +2,7 @@ using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
 using Polly.Retry;
 using TddXt.AzureTestResources.Common;
+using TddXt.AzureTestResources.Cosmos.ImplementationDetails;
 
 namespace TddXt.AzureTestResources.Cosmos;
 
@@ -12,18 +13,24 @@ public class CosmosTestDatabase : IAzureResourceApi
   private readonly AsyncRetryPolicy _createResourcePolicy;
   private readonly Database _database;
   private readonly ILogger _logger;
+  private readonly CosmosClient _cosmosClient;
 
-  public CosmosTestDatabase(Database database,
+  public CosmosTestDatabase(
+    string databaseId, 
     ILogger logger,
     AsyncRetryPolicy createResourcePolicy,
-    string connectionString,
-    CancellationToken cancellationToken)
+    CancellationToken cancellationToken, 
+    CosmosTestDatabaseConfig config)
   {
-    _database = database;
     _logger = logger;
     _createResourcePolicy = createResourcePolicy;
     _cancellationToken = cancellationToken;
-    ConnectionString = connectionString;
+    ConnectionString = config.ConnectionString;
+
+    //New cosmos db client is needed because
+    //the old one needs to be disposed after initial resource creation.
+    _cosmosClient = CosmosClientFactory.CreateCosmosClient(config);
+    _database = _cosmosClient.GetDatabase(databaseId);
     Name = _database.Id;
   }
 
@@ -32,16 +39,23 @@ public class CosmosTestDatabase : IAzureResourceApi
 
   public async ValueTask DisposeAsync()
   {
-    foreach (var container in _containers)
+    try
     {
-      _logger.Deleting("container", _database.Id);
-      await container.DeleteContainerAsync(cancellationToken: _cancellationToken);
-      _logger.Deleted("container", _database.Id);
-    }
+      foreach (var container in _containers)
+      {
+        _logger.Deleting("container", _database.Id);
+        await container.DeleteContainerAsync(cancellationToken: _cancellationToken);
+        _logger.Deleted("container", _database.Id);
+      }
 
-    _logger.Deleting("database", _database.Id);
-    await _database.DeleteAsync(cancellationToken: _cancellationToken);
-    _logger.Deleted("database", _database.Id);
+      _logger.Deleting("database", _database.Id);
+      await _database.DeleteAsync(cancellationToken: _cancellationToken);
+      _logger.Deleted("database", _database.Id);
+    }
+    finally
+    {
+      _cosmosClient.Dispose();
+    }
   }
 
   public async Task CreateContainer(string containerName, string partitionKey)

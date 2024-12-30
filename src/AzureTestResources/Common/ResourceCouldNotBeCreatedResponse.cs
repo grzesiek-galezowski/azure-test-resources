@@ -1,31 +1,23 @@
 namespace TddXt.AzureTestResources.Common;
 
-public class ResourceCouldNotBeCreatedResponse<TApi> : ICreateAzureResourceResponse<TApi>
+public class ResourceCouldNotBeCreatedResponse<TApi>(Exception rootCause, bool shouldBeRetried)
+  : ICreateAzureResourceResponse<TApi>
   where TApi : IAzureResourceApi
 {
-  private readonly Exception _rootCause;
-  private readonly bool _shouldBeRetried;
-
-  public ResourceCouldNotBeCreatedResponse(Exception rootCause, bool shouldBeRetried)
-  {
-    _rootCause = rootCause;
-    _shouldBeRetried = shouldBeRetried;
-  }
-
   public void AssertResourceCreated()
   {
-    throw new ResourceCouldNotBeCreatedException(_rootCause);
+    throw new ResourceCouldNotBeCreatedException(rootCause);
   }
 
-  public bool ShouldBeRetried() => _shouldBeRetried;
+  public bool ShouldBeRetried() => shouldBeRetried;
 
   public string GetReasonForRetry()
   {
-    return _rootCause.ToString();
+    return rootCause.ToString();
   }
 
   public TApi CreateResourceApi()
   {
-    throw new ResourceCouldNotBeCreatedException(_rootCause);
+    throw new ResourceCouldNotBeCreatedException(rootCause);
   }
 }

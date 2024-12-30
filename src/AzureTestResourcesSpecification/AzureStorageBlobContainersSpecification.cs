@@ -3,15 +3,31 @@ using Azure;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Extensions.Logging.NUnit;
+using FluentAssertions;
 using TddXt.AzureTestResources.Storage;
 using TddXt.AzureTestResources.Storage.Blobs;
+using Testcontainers.Azurite;
 
 namespace TddXt.AzureTestResourcesSpecification;
 
 public class AzureStorageBlobContainersSpecification
 {
-  private readonly Lazy<Task> _deleteAllDatabases
-    = new(() => ZombieBlobContainerCleanup.DeleteZombieContainers(Logger()));
+  private AzuriteContainer _container;
+  private Lazy<Task> _deleteAllDatabases;
+
+  [OneTimeSetUp]
+  public async Task SetUpEmulator()
+  {
+    _container = await DockerContainersForTests.StartAzuriteContainer();
+    _deleteAllDatabases = new Lazy<Task>(() => ZombieBlobContainerCleanup.DeleteZombieContainers(_container.GetConnectionString(), Logger()));
+  }
+
+  [OneTimeTearDown]
+  public async Task TearDownEmulator()
+  {
+    await _container.DisposeAsync();
+  }
+
 
   [TestCase(1)]
   [TestCase(2)]
@@ -50,8 +66,9 @@ public class AzureStorageBlobContainersSpecification
     await _deleteAllDatabases.Value;
 
     var messageText = "lol";
-    await using var container = await AzureStorageResources.CreateBlobContainer(
-      Logger(), new CancellationToken());
+    await using var container = await new AzureStorageResources(_container.GetConnectionString()).CreateBlobContainer(
+      Logger(), 
+      new CancellationTokenSource().Token);
     var containerClient = new BlobContainerClient(container.ConnectionString, container.Name);
 
     var blobClient = containerClient.GetBlobClient("myBlob");
@@ -60,7 +77,7 @@ public class AzureStorageBlobContainersSpecification
     var response = await blobClient.DownloadAsync();
 
     var responseText = await GetStringFrom(response);
-    Assert.AreEqual(messageText, responseText);
+    responseText.Should().Be(messageText);
   }
 
   private static NUnitLogger Logger()

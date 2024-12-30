@@ -5,26 +5,16 @@ using TddXt.AzureTestResources.Common;
 
 namespace TddXt.AzureTestResources.Cosmos.ImplementationDetails;
 
-public class CreatedDatabase : ICreatedResource
+public class CreatedDatabase(DatabaseProperties databaseProperties, CosmosClient cosmosClient, ILogger logger)
+  : ICreatedResource
 {
-  private readonly DatabaseProperties _databaseProperties;
-  private readonly CosmosClient _cosmosClient;
-  private readonly ILogger _logger;
-
-  public CreatedDatabase(DatabaseProperties databaseProperties, CosmosClient cosmosClient, ILogger logger)
-  {
-    _databaseProperties = databaseProperties;
-    _cosmosClient = cosmosClient;
-    _logger = logger;
-  }
-
-  public string Name => _databaseProperties.Id;
+  public string Name => databaseProperties.Id;
   public async Task DeleteAsync()
   {
     try
     {
-      var database = _cosmosClient.GetDatabase(_databaseProperties.Id);
-      await DeleteContainers(database, _cosmosClient);
+      var database = cosmosClient.GetDatabase(databaseProperties.Id);
+      await DeleteContainers(database, cosmosClient);
       await database.DeleteAsync();
     }
     catch (CosmosException e) when (e.StatusCode == HttpStatusCode.NotFound)
@@ -40,19 +30,19 @@ public class CreatedDatabase : ICreatedResource
   private async Task DeleteContainers(Database database, CosmosClient client)
   {
     var containerPropertiesList = await DatabaseInformation.GetContainerList(database);
-    _logger.LogInformation($"Database has {containerPropertiesList.Count} containers");
+    logger.LogInformation($"Database has {containerPropertiesList.Count} containers");
     foreach (var containerProperties in containerPropertiesList)
     {
       try
       {
-        _logger.LogInformation($"Deleting container {containerProperties.Id}");
+        logger.LogInformation($"Deleting container {containerProperties.Id}");
         var container = client.GetContainer(database.Id, containerProperties.Id);
         await container.DeleteContainerAsync();
-        _logger.LogInformation($"Deleted container {containerProperties.Id}");
+        logger.LogInformation($"Deleted container {containerProperties.Id}");
       }
       catch (CosmosException e) when (e.StatusCode == HttpStatusCode.NotFound)
       {
-        _logger.LogWarning($"Container {containerProperties.Id} already deleted");
+        logger.LogWarning($"Container {containerProperties.Id} already deleted");
       }
     }
   }

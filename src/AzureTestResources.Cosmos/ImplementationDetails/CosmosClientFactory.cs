@@ -12,6 +12,15 @@ public static class CosmosClientFactory
         maxRetryAttemptsOnThrottledRequests: config.MaxRetryAttemptsOnThrottledRequests,
         maxRetryWaitTimeOnThrottledRequests: config.MaxRetryWaitTimeOnThrottledRequests)
       .WithRequestTimeout(config.RequestTimeout)
+      .WithHttpClientFactory(() =>
+      {
+          HttpMessageHandler httpMessageHandler = new HttpClientHandler
+          {
+            ServerCertificateCustomValidationCallback = (req, cert, chain, errors) => true
+          };
+          return new HttpClient(httpMessageHandler);
+      })
+      .WithConnectionModeGateway()
       .Build();
     return cosmosClient;
   }

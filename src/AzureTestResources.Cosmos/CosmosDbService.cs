@@ -6,7 +6,12 @@ using TddXt.AzureTestResources.Common;
 
 namespace TddXt.AzureTestResources.Cosmos;
 
-public class CosmosDbService : IAzureService<CosmosTestDatabase>
+public class CosmosDbService(
+  CosmosClient client,
+  CosmosTestDatabaseConfig config,
+  ILogger logger,
+  CancellationToken cancellationToken)
+  : IAzureService<CosmosTestDatabase>
 {
   private static readonly IReadOnlyList<HttpStatusCode> CreateResourceRetryCodes =
     new List<HttpStatusCode>
@@ -16,39 +21,22 @@ public class CosmosDbService : IAzureService<CosmosTestDatabase>
       HttpStatusCode.Conflict
     }.ToImmutableArray();
 
-  private readonly CosmosClient _client;
-  private readonly CosmosTestDatabaseConfig _config;
-  private readonly ILogger _logger;
-  private readonly CancellationToken _cancellationToken;
-
-  public CosmosDbService(
-    CosmosClient client,
-    CosmosTestDatabaseConfig config,
-    ILogger logger,
-    CancellationToken cancellationToken)
-  {
-    _client = client;
-    _config = config;
-    _logger = logger;
-    _cancellationToken = cancellationToken;
-  }
-
   public async Task<ICreateAzureResourceResponse<CosmosTestDatabase>> CreateResourceInstance()
   {
     try
     {
-      var dbName = TestResourceNamingConvention.GenerateResourceId(_config.NamePrefix);
+      var dbName = TestResourceNamingConvention.GenerateResourceId(config.NamePrefix);
       var databaseResponse =
-        await _client.CreateDatabaseAsync(
+        await client.CreateDatabaseAsync(
           dbName,
-          cancellationToken: _cancellationToken);
+          cancellationToken: cancellationToken);
 
       return new CreateCosmosDatabaseResponse(
-        _config,
-        _logger,
+        config,
+        logger,
         databaseResponse,
         dbName,
-        _cancellationToken);
+        cancellationToken);
     }
     catch (CosmosException ex) when (CreateResourceRetryCodes.Contains(ex.StatusCode))
     {

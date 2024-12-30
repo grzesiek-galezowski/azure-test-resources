@@ -1,13 +1,32 @@
 ﻿using Azure.Data.Tables;
 using Extensions.Logging.NUnit;
+using FluentAssertions.Extensions;
 using TddXt.AzureTestResources.Data.Tables;
+using Testcontainers.CosmosDb;
 
 namespace TddXt.AzureTestResourcesSpecification;
 
 internal class CosmosTableApiSpecification
 {
-  private static readonly Lazy<Task> CleanupZombieTablesOnce =
-    new(() => ZombieTableCleanup.DeleteZombieTables(CosmosTestTableConfig.Default(), new NUnitLogger("table")));
+  private CosmosDbContainer _container;
+  private Lazy<Task> _cleanupAllTables;
+
+  [OneTimeSetUp]
+  public async Task SetUpEmulator()
+  {
+    _container = await DockerContainersForTests.StartCosmosDbContainer();
+
+    _cleanupAllTables = new(() => ZombieTableCleanup.DeleteZombieTables(
+      CosmosTestTableConfig.Default(), 
+      new NUnitLogger("test")));
+  }
+
+  [OneTimeTearDown]
+  public async Task TearDownEmulator()
+  {
+    TestContext.Progress.WriteLine(await _container.GetLogsAsync());
+    await _container.DisposeAsync();
+  }
 
   [TestCase(1)]
   [TestCase(2)]
@@ -43,11 +62,13 @@ internal class CosmosTableApiSpecification
   [TestCase(36)]
   public async Task ShouldCreateTestTable(int testNo)
   {
-    await CleanupZombieTablesOnce.Value;
-    var cancellationToken = new CancellationToken();
+    await _cleanupAllTables.Value.WaitAsync(1.Minutes()); //bug
+    var cancellationToken = new CancellationTokenSource().Token;
 
     //GIVEN
-    await using var table = await CosmosDbTableResources.CreateTable(new NUnitLogger("table"), cancellationToken);
+    await using var table = await CosmosDbTableResources.CreateTable(
+      CosmosTestTableConfig.Default(), 
+      new NUnitLogger("table"), cancellationToken);
 
     //WHEN
     var tableClient = new TableServiceClient(table.ConnectionString);

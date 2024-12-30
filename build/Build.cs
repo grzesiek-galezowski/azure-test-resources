@@ -1,5 +1,4 @@
 using System.IO;
-using GlobExpressions;
 using Nuke.Common;
 using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.IO;

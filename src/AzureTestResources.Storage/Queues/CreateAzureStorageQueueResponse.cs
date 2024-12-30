@@ -5,52 +5,38 @@ using TddXt.AzureTestResources.Common;
 
 namespace TddXt.AzureTestResources.Storage.Queues;
 
-public class CreateAzureStorageQueueResponse : ICreateAzureResourceResponse<StorageTestQueue>
+public class CreateAzureStorageQueueResponse(
+  Response<QueueClient> response,
+  string resourceName,
+  QueueServiceClient client,
+  string connectionString,
+  CancellationToken cancellationToken)
+  : ICreateAzureResourceResponse<StorageTestQueue>
 {
-  private readonly Response<QueueClient> _response;
-  private readonly string _resourceName;
-  private readonly QueueServiceClient _client;
-  private readonly string _connectionString;
-  private readonly CancellationToken _cancellationToken;
-
-  public CreateAzureStorageQueueResponse(
-    Response<QueueClient> response,
-    string resourceName,
-    QueueServiceClient client,
-    string connectionString,
-    CancellationToken cancellationToken)
-  {
-    _response = response;
-    _resourceName = resourceName;
-    _client = client;
-    _connectionString = connectionString;
-    _cancellationToken = cancellationToken;
-  }
-
   public void AssertResourceCreated()
   {
     var resourceType = "queue";
-    Assertions.AssertNotNull(_response, resourceType, _resourceName);
-    Assertions.AssertNamesMatch(_resourceName, _response.Value.Name);
-    Assertions.AssertIsHttpCreated(_response, resourceType);
+    Assertions.AssertNotNull(response, resourceType, resourceName);
+    Assertions.AssertNamesMatch(resourceName, response.Value.Name);
+    Assertions.AssertIsHttpCreated(response, resourceType);
   }
 
   public bool ShouldBeRetried()
   {
-    return _response.GetRawResponse().Status == (int)HttpStatusCode.NoContent;
+    return response.GetRawResponse().Status == (int)HttpStatusCode.NoContent;
   }
 
   public string GetReasonForRetry()
   {
-    return $"status code {_response.GetRawResponse().Status} and error {_response.GetRawResponse().ReasonPhrase}";
+    return $"status code {response.GetRawResponse().Status} and error {response.GetRawResponse().ReasonPhrase}";
   }
 
   public StorageTestQueue CreateResourceApi()
   {
     return new StorageTestQueue(
-      _client,
-      _response.Value.Name,
-      _connectionString,
-      _cancellationToken);
+      client,
+      response.Value.Name,
+      connectionString,
+      cancellationToken);
   }
 }

@@ -6,9 +6,9 @@ namespace TddXt.AzureTestResources.Storage.Blobs;
 
 public static class ZombieBlobContainerCleanup
 {
-  public static async Task DeleteZombieContainers(ILogger logger)
+  public static async Task DeleteZombieContainers(string connectionString, ILogger logger)
     => await DeleteZombieContainers(
-      AzureStorageResources.AzuriteConnectionString,
+      connectionString,
       AzureResources.DefaultZombieToleranceForEmulator,
       logger);
 

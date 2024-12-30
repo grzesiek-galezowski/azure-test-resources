@@ -9,9 +9,9 @@ namespace TddXt.AzureTestResources.Storage.Queues;
 
 public class ZombieStorageQueueCleanup
 {
-  public static async Task DeleteZombieQueues(ILogger logger)
+  public static async Task DeleteZombieQueues(string connectionString, ILogger logger)
     => await DeleteZombieQueues(
-      AzureStorageResources.AzuriteConnectionString,
+      connectionString,
       AzureResources.DefaultZombieToleranceForEmulator, logger);
 
   public static async Task DeleteZombieQueues(string connectionString, TimeSpan tolerance, ILogger logger)
@@ -21,14 +21,9 @@ public class ZombieStorageQueueCleanup
   }
 }
 
-public class CreatedStorageQueuePool : ICreatedResourcesPool
+public class CreatedStorageQueuePool(string connectionString) : ICreatedResourcesPool
 {
-  private readonly QueueServiceClient _serviceClient;
-
-  public CreatedStorageQueuePool(string connectionString)
-  {
-    _serviceClient = new QueueServiceClient(connectionString);
-  }
+  private readonly QueueServiceClient _serviceClient = new(connectionString);
 
   public async Task<IEnumerable<ICreatedResource>> LoadResources()
   {
@@ -37,24 +32,15 @@ public class CreatedStorageQueuePool : ICreatedResourcesPool
   }
 }
 
-public class CreatedStorageQueue : ICreatedResource
+public class CreatedStorageQueue(QueueItem queueItem, QueueServiceClient serviceClient) : ICreatedResource
 {
-  private readonly QueueItem _queueItem;
-  private readonly QueueServiceClient _serviceClient;
-
-  public CreatedStorageQueue(QueueItem queueItem, QueueServiceClient serviceClient)
-  {
-    _queueItem = queueItem;
-    _serviceClient = serviceClient;
-  }
-
-  public string Name => _queueItem.Name;
+  public string Name => queueItem.Name;
 
   public async Task DeleteAsync()
   {
     try
     {
-      await _serviceClient.GetQueueClient(_queueItem.Name).DeleteIfExistsAsync();
+      await serviceClient.GetQueueClient(queueItem.Name).DeleteIfExistsAsync();
     }
     catch (RequestFailedException e) when (e.Status == (int)HttpStatusCode.NotFound)
     {

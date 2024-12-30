@@ -1,14 +1,32 @@
 ﻿using Azure.Storage.Queues;
 using Extensions.Logging.NUnit;
+using FluentAssertions;
 using TddXt.AzureTestResources.Storage;
 using TddXt.AzureTestResources.Storage.Queues;
+using Testcontainers.Azurite;
 
 namespace TddXt.AzureTestResourcesSpecification;
 
 public class AzureStorageQueuesSpecification
 {
-  private readonly Lazy<Task> _deleteAllQueues
-    = new(() => ZombieStorageQueueCleanup.DeleteZombieQueues(new NUnitLogger("storagequeue")));
+  private AzuriteContainer _container;
+  private Lazy<Task> _deleteAllQueues;
+
+  [OneTimeSetUp]
+  public async Task SetUpEmulator()
+  {
+    _container = await DockerContainersForTests.StartAzuriteContainer();
+
+    _deleteAllQueues = new(() => ZombieStorageQueueCleanup.DeleteZombieQueues(_container.GetConnectionString(),
+      new NUnitLogger("storagequeue")));
+  }
+
+  [OneTimeTearDown]
+  public async Task TearDownEmulator()
+  {
+    await _container.DisposeAsync();
+  }
+
 
   [TestCase(1)]
   [TestCase(2)]
@@ -47,12 +65,14 @@ public class AzureStorageQueuesSpecification
     await _deleteAllQueues.Value;
 
     var messageText = "lol";
-    await using var queue = await AzureStorageResources.CreateQueue(
-      new NUnitLogger("storagequeue"), new CancellationToken());
+    var cancellationToken = new CancellationTokenSource().Token;
+    await using var queue = await new AzureStorageResources(_container.GetConnectionString()).CreateQueue(
+      new NUnitLogger("storagequeue"), //bug consider one logger for the resources object
+      cancellationToken);
     var queueClient = new QueueClient(queue.ConnectionString, queue.Name);
-    await queueClient.SendMessageAsync(messageText);
+    await queueClient.SendMessageAsync(messageText, cancellationToken);
 
-    var message = await queueClient.ReceiveMessageAsync();
-    Assert.AreEqual(messageText, message.Value.MessageText);
+    var message = await queueClient.ReceiveMessageAsync(cancellationToken: cancellationToken);
+    message.Value.MessageText.Should().Be(messageText);
   }
 }

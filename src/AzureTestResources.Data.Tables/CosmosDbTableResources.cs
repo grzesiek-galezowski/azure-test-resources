@@ -8,7 +8,7 @@ public static class CosmosDbTableResources
 {
   public static Task<CosmosTestTable> CreateTable(ILogger logger, CancellationToken cancellationToken) => CreateTable(CosmosTestTableConfig.Default(), logger, cancellationToken);
 
-  private static async Task<CosmosTestTable> CreateTable(
+  public static async Task<CosmosTestTable> CreateTable(
     CosmosTestTableConfig config, ILogger logger, CancellationToken cancellationToken)
   {
     var cosmosDbTableService = new CosmosDbTableService(

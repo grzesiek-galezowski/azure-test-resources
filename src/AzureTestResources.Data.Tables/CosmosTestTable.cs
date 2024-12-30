@@ -4,24 +4,15 @@ using TddXt.AzureTestResources.Common;
 
 namespace TddXt.AzureTestResources.Data.Tables;
 
-public class CosmosTestTable : IAzureResourceApi
+public class CosmosTestTable(string name, TableServiceClient client, string connectionString, ILogger logger)
+  : IAzureResourceApi
 {
-  public string Name { get; }
-  public string ConnectionString { get; }
-  private readonly TableServiceClient _client;
-  private readonly ILogger _logger;
-
-  public CosmosTestTable(string name, TableServiceClient client, string connectionString, ILogger logger)
-  {
-    Name = name;
-    _client = client;
-    _logger = logger;
-    ConnectionString = connectionString;
-  }
+  public string Name { get; } = name;
+  public string ConnectionString { get; } = connectionString;
 
   public async ValueTask DisposeAsync()
   {
-    _logger.LogInformation("Deleting table " + Name);
-    await _client.DeleteTableAsync(Name);
+    logger.LogInformation("Deleting table " + Name);
+    await client.DeleteTableAsync(Name);
   }
 }

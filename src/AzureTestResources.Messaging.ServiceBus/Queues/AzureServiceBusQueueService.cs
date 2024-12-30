@@ -5,51 +5,35 @@ using TddXt.AzureTestResources.Common;
 
 namespace TddXt.AzureTestResources.Messaging.ServiceBus.Queues;
 
-public class AzureServiceBusQueueService : IAzureService<ServiceBusTestQueue>
+public class AzureServiceBusQueueService(
+  string connectionString,
+  string namePrefix,
+  ServiceBusAdministrationClient serviceBusClient,
+  TimeSpan autoDeleteOnIdle,
+  ILogger logger,
+  CancellationToken cancellationToken)
+  : IAzureService<ServiceBusTestQueue>
 {
-  private readonly ServiceBusAdministrationClient _serviceBusClient;
-  private readonly CancellationToken _cancellationToken;
-  private readonly string _namePrefix;
-  private readonly string _connectionString;
-  private readonly TimeSpan _autoDeleteOnIdle;
-  private readonly ILogger _logger;
-
-  public AzureServiceBusQueueService(
-    string connectionString,
-    string namePrefix,
-    ServiceBusAdministrationClient serviceBusClient,
-    TimeSpan autoDeleteOnIdle,
-    ILogger logger,
-    CancellationToken cancellationToken)
-  {
-    _connectionString = connectionString;
-    _namePrefix = namePrefix;
-    _cancellationToken = cancellationToken;
-    _serviceBusClient = serviceBusClient;
-    _autoDeleteOnIdle = autoDeleteOnIdle;
-    _logger = logger;
-  }
-
   public async Task<ICreateAzureResourceResponse<ServiceBusTestQueue>> CreateResourceInstance()
   {
     try
     {
-      var queueName = TestResourceNamingConvention.GenerateResourceId(_namePrefix);
+      var queueName = TestResourceNamingConvention.GenerateResourceId(namePrefix);
 
-      _logger.Creating("service bus queue", queueName);
+      logger.Creating("service bus queue", queueName);
 
-      var sdkResponse = await _serviceBusClient.CreateQueueAsync(
+      var sdkResponse = await serviceBusClient.CreateQueueAsync(
         new CreateQueueOptions(queueName)
         {
-          AutoDeleteOnIdle = _autoDeleteOnIdle
-        }, _cancellationToken);
+          AutoDeleteOnIdle = autoDeleteOnIdle
+        }, cancellationToken);
       var response = new CreateAzureServiceBusQueueResponse(
-        _connectionString,
-        _serviceBusClient,
+        connectionString,
+        serviceBusClient,
         sdkResponse,
         queueName,
-        _logger,
-        _cancellationToken);
+        logger,
+        cancellationToken);
 
       return response;
     }

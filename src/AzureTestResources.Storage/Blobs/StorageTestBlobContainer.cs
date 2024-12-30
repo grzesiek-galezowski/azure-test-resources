@@ -4,33 +4,21 @@ using TddXt.AzureTestResources.Common;
 
 namespace TddXt.AzureTestResources.Storage.Blobs;
 
-public class StorageTestBlobContainer : IAzureResourceApi
+public class StorageTestBlobContainer(
+  BlobServiceClient client,
+  string name,
+  string connectionString,
+  ILogger logger,
+  CancellationToken ct)
+  : IAzureResourceApi
 {
-  private readonly BlobServiceClient _client;
-  private readonly ILogger _logger;
-  private readonly CancellationToken _ct;
-
-  public string ConnectionString { get; }
-  public string Name { get; }
-
-  public StorageTestBlobContainer(
-    BlobServiceClient client,
-    string name,
-    string connectionString,
-    ILogger logger,
-    CancellationToken ct)
-  {
-    _client = client;
-    _logger = logger;
-    _ct = ct;
-    ConnectionString = connectionString;
-    Name = name;
-  }
+  public string ConnectionString { get; } = connectionString;
+  public string Name { get; } = name;
 
   public async ValueTask DisposeAsync()
   {
-    _logger.Deleting("blob container", Name);
-    await _client.DeleteBlobContainerAsync(Name, cancellationToken: _ct);
-    _logger.Deleted("blob container", Name);
+    logger.Deleting("blob container", Name);
+    await client.DeleteBlobContainerAsync(Name, cancellationToken: ct);
+    logger.Deleted("blob container", Name);
   }
 }

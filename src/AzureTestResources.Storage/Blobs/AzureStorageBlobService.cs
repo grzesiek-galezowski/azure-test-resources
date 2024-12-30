@@ -5,25 +5,13 @@ using TddXt.AzureTestResources.Common;
 
 namespace TddXt.AzureTestResources.Storage.Blobs;
 
-public class AzureStorageBlobService : IAzureService<StorageTestBlobContainer>
+public class AzureStorageBlobService(
+  BlobServiceClient client,
+  string connectionString,
+  ILogger logger,
+  CancellationToken cancellationToken)
+  : IAzureService<StorageTestBlobContainer>
 {
-  private readonly BlobServiceClient _client;
-  private readonly string _connectionString;
-  private readonly ILogger _logger;
-  private readonly CancellationToken _cancellationToken;
-
-  public AzureStorageBlobService(
-    BlobServiceClient client,
-    string connectionString,
-    ILogger logger,
-    CancellationToken cancellationToken)
-  {
-    _client = client;
-    _connectionString = connectionString;
-    _logger = logger;
-    _cancellationToken = cancellationToken;
-  }
-
   public async Task<ICreateAzureResourceResponse<StorageTestBlobContainer>> CreateResourceInstance()
   {
     try
@@ -31,14 +19,14 @@ public class AzureStorageBlobService : IAzureService<StorageTestBlobContainer>
       var resourceName = TestResourceNamingConvention.GenerateResourceId(
         "b" /* see https://learn.microsoft.com/en-us/rest/api/storageservices/naming-and-referencing-containers--blobs--and-metadata#resource-names */);
 
-      _logger.Creating("blob container", resourceName);
+      logger.Creating("blob container", resourceName);
       var response = new CreateAzureStorageBlobContainerResponse(
-        await _client.CreateBlobContainerAsync(resourceName, cancellationToken: _cancellationToken),
+        await client.CreateBlobContainerAsync(resourceName, cancellationToken: cancellationToken),
         resourceName,
-        _client,
-        _connectionString,
-        _logger,
-        _cancellationToken);
+        client,
+        connectionString,
+        logger,
+        cancellationToken);
       return response;
     }
     catch (RequestFailedException ex)

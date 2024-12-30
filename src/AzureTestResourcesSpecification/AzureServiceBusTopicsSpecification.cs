@@ -1,11 +1,29 @@
 ﻿using Azure.Messaging.ServiceBus;
 using Extensions.Logging.NUnit;
+using FluentAssertions;
 using TddXt.AzureTestResources.Messaging.ServiceBus;
+using Testcontainers.ServiceBus;
 
 namespace TddXt.AzureTestResourcesSpecification;
 
 public class AzureServiceBusTopicsSpecification
 {
+  // will not work yet, because the emulator does not support admin sdk
+  private ServiceBusContainer _container;
+
+  [OneTimeSetUp]
+  public async Task SetUpEmulator()
+  {
+    _container = await DockerContainersForTests.StartServiceBusContainer();
+  }
+
+  [OneTimeTearDown]
+  public async Task TearDownEmulator()
+  {
+    await _container.DisposeAsync();
+  }
+
+
   [TestCase(1)]
   [TestCase(2)]
   [TestCase(3)]
@@ -41,10 +59,10 @@ public class AzureServiceBusTopicsSpecification
   public async Task ShouldCreateAzureServiceBusTopic(int testNo)
   {
     //GIVEN
-    var ct = new CancellationToken();
+    var ct = new CancellationTokenSource().Token;
 
     await using var topic = await ServiceBusTestResources.CreateTopic(
-      await File.ReadAllTextAsync("C:\\Users\\HYPERBOOK\\.secrets\\service-bus-connection-string.txt", ct),
+      _container.GetConnectionString(),
       "testTopic",
       new NUnitLogger("servicebus"),
       ct);
@@ -59,6 +77,6 @@ public class AzureServiceBusTopicsSpecification
     var receiver = client.CreateReceiver(topic.Name, "MyMessages");
     var receivedMessage = await receiver.ReceiveMessageAsync(cancellationToken: ct);
 
-    Assert.AreEqual("lol", receivedMessage.Body.ToString());
+    receivedMessage.Body.ToString().Should().Be("lol");
   }
 }

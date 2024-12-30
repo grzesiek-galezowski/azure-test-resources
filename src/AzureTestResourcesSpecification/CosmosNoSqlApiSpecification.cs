@@ -1,13 +1,33 @@
+using DotNet.Testcontainers.Containers;
 using Extensions.Logging.NUnit;
-using Microsoft.Azure.Cosmos;
 using TddXt.AzureTestResources.Cosmos;
+using TddXt.AzureTestResources.Cosmos.ImplementationDetails;
 
 namespace TddXt.AzureTestResourcesSpecification;
 
 public class CosmosNoSqlApiSpecification
 {
-  private readonly Lazy<Task> _deleteAllDatabases
-    = new(() => ZombieDatabaseCleanup.DeleteZombieDatabases(CosmosTestDatabaseConfig.Default(), new NUnitLogger("test")));
+  private IContainer _container;
+  private Lazy<Task> _deleteAllDatabases;
+
+  private string connectionStringTemplate = //bug parameterize based on exposed port
+    "AccountEndpoint=https://localhost:8081/;AccountKey=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==;";
+
+  [OneTimeSetUp]
+  public async Task SetUpEmulator()
+  {
+    _container = await DockerContainersForTests.StartCosmosDbContainer2();
+
+    _deleteAllDatabases = new(() => ZombieDatabaseCleanup.DeleteZombieDatabases(
+      CosmosTestDatabaseConfig.Default() with { ConnectionString = connectionStringTemplate }, //bug DRY
+      new NUnitLogger("test")));
+  }
+
+  [OneTimeTearDown]
+  public async Task TearDownEmulator()
+  {
+    await _container.DisposeAsync();
+  }
 
   [TestCase(1)]
   [TestCase(2)]
@@ -45,10 +65,16 @@ public class CosmosNoSqlApiSpecification
   {
     await _deleteAllDatabases.Value;
 
-    await using var db = await CosmosDbResources.CreateDatabase(new NUnitLogger("test"));
+    await using var db = await CosmosDbResources.CreateDatabase(CosmosTestDatabaseConfig.Default() with
+    {
+      ConnectionString = connectionStringTemplate
+    }, new NUnitLogger("test"));
     await db.CreateContainer(x.ToString(), "/id");
 
-    using var cosmosClient = new CosmosClient(db.ConnectionString);
+    using var cosmosClient = CosmosClientFactory.CreateCosmosClient(CosmosTestDatabaseConfig.Default() with
+    {
+      ConnectionString = connectionStringTemplate
+    });
     var container = cosmosClient.GetContainer(db.Name, x.ToString());
     await container.CreateItemAsync(new
     {

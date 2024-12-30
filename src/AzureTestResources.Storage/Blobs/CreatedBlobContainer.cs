@@ -6,24 +6,16 @@ using TddXt.AzureTestResources.Common;
 
 namespace TddXt.AzureTestResources.Storage.Blobs;
 
-public class CreatedBlobContainer : ICreatedResource
+public class CreatedBlobContainer(BlobContainerItem blobContainerItem, BlobServiceClient blobServiceClient)
+  : ICreatedResource
 {
-  private readonly BlobContainerItem _blobContainerItem;
-  private readonly BlobServiceClient _blobServiceClient;
-
-  public CreatedBlobContainer(BlobContainerItem blobContainerItem, BlobServiceClient blobServiceClient)
-  {
-    _blobContainerItem = blobContainerItem;
-    _blobServiceClient = blobServiceClient;
-  }
-
-  public string Name => _blobContainerItem.Name;
+  public string Name => blobContainerItem.Name;
 
   public async Task DeleteAsync()
   {
     try
     {
-      await _blobServiceClient.GetBlobContainerClient(Name).DeleteIfExistsAsync();
+      await blobServiceClient.GetBlobContainerClient(Name).DeleteIfExistsAsync();
     }
     catch (RequestFailedException e) when (e.Status == (int)HttpStatusCode.NotFound)
     {

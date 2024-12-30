@@ -1,7 +1,6 @@
 using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Containers;
 using Extensions.Logging.NUnit;
-using TddXt.AzureTestResources.Data.Tables;
 using Testcontainers.Azurite;
 using Testcontainers.CosmosDb;
 using Testcontainers.ServiceBus;
@@ -17,6 +16,18 @@ public static class DockerContainersForTests
       .WithAcceptLicenseAgreement(true).Build();
     await container.StartAsync();
     await TestContext.Progress.WriteLineAsync(container.GetConnectionString());
+    return container;
+  }
+
+  public static async Task<IContainer> StartServiceBusContainer2() //bug name
+  {
+    var container = new ContainerBuilder().WithImage("localsandbox/localsandbox")
+        .WithName("localsandbox")
+        .WithLogger(new NUnitLogger("lol")) //bug 
+        .WithPortBinding(7329, 7329)
+        .WithPortBinding(5672, 5672)
+        .Build(); 
+    await container.StartAsync();
     return container;
   }
 
@@ -49,7 +60,7 @@ public static class DockerContainersForTests
     var container = new ContainerBuilder()
         .WithLogger(new NUnitLogger("lol")) //bug
         .WithImage("ghcr.io/pikami/cosmium")
-        .WithPortBinding(8081, assignRandomHostPort: true) //bug cleanup!!!
+        .WithPortBinding(8081, 8081)
         //.WithEnvironment("COSMIUM_DISABLEAUTH", "true")
         //.WithEnvironment("COSMIUM_PERSIST", "/save.json")
         //.WithBindMount("./save.json", "/save.json")

@@ -13,7 +13,7 @@ public record CosmosTestDatabaseConfig(
   {
     return new CosmosTestDatabaseConfig(
       "testDb",
-      $"AccountEndpoint=https://localhost:{portNumber}/;AccountKey=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==",
+      $"AccountEndpoint=https://localhost:{portNumber}/;AccountKey=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==;",
       100,
       TimeSpan.FromSeconds(10),
       TimeSpan.FromSeconds(30));

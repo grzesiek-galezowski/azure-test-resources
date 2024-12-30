@@ -9,14 +9,16 @@ public class CosmosNoSqlApiSpecification
 {
   private IContainer _container;
   private Lazy<Task> _deleteAllDatabases;
-  private CosmosTestDatabaseConfig EmulatorDocumentApiConfig => CosmosTestDatabaseConfig.WithPort(_container.GetMappedPublicPort(CosmosTestDatabaseConfig.DefaultPortNumber));
+
+  private CosmosTestDatabaseConfig EmulatorDocumentApiConfig =>
+    CosmosTestDatabaseConfig.WithPort(_container.GetMappedPublicPort(CosmosTestDatabaseConfig.DefaultPortNumber));
 
   [OneTimeSetUp]
   public async Task SetUpEmulator()
   {
     _container = await DockerContainersForTests.StartCosmosDbContainer2();
 
-    _deleteAllDatabases = new(() => ZombieDatabaseCleanup.DeleteZombieDatabases(
+    _deleteAllDatabases = new Lazy<Task>(() => ZombieDatabaseCleanup.DeleteZombieDatabases(
       EmulatorDocumentApiConfig,
       new NUnitLogger("test")));
   }

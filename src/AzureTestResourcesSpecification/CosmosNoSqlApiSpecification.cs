@@ -9,9 +9,7 @@ public class CosmosNoSqlApiSpecification
 {
   private IContainer _container;
   private Lazy<Task> _deleteAllDatabases;
-
-  private string connectionStringTemplate = //bug parameterize based on exposed port
-    "AccountEndpoint=https://localhost:8081/;AccountKey=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==;";
+  private CosmosTestDatabaseConfig EmulatorDocumentApiConfig => CosmosTestDatabaseConfig.WithPort(_container.GetMappedPublicPort(CosmosTestDatabaseConfig.DefaultPortNumber));
 
   [OneTimeSetUp]
   public async Task SetUpEmulator()
@@ -19,9 +17,10 @@ public class CosmosNoSqlApiSpecification
     _container = await DockerContainersForTests.StartCosmosDbContainer2();
 
     _deleteAllDatabases = new(() => ZombieDatabaseCleanup.DeleteZombieDatabases(
-      CosmosTestDatabaseConfig.Default() with { ConnectionString = connectionStringTemplate }, //bug DRY
+      EmulatorDocumentApiConfig,
       new NUnitLogger("test")));
   }
+
 
   [OneTimeTearDown]
   public async Task TearDownEmulator()
@@ -65,16 +64,10 @@ public class CosmosNoSqlApiSpecification
   {
     await _deleteAllDatabases.Value;
 
-    await using var db = await CosmosDbResources.CreateDatabase(CosmosTestDatabaseConfig.Default() with
-    {
-      ConnectionString = connectionStringTemplate
-    }, new NUnitLogger("test"));
+    await using var db = await CosmosDbResources.CreateDatabase(EmulatorDocumentApiConfig, new NUnitLogger("test"));
     await db.CreateContainer(x.ToString(), "/id");
 
-    using var cosmosClient = CosmosClientFactory.CreateCosmosClient(CosmosTestDatabaseConfig.Default() with
-    {
-      ConnectionString = connectionStringTemplate
-    });
+    using var cosmosClient = CosmosClientFactory.CreateCosmosClient(EmulatorDocumentApiConfig);
     var container = cosmosClient.GetContainer(db.Name, x.ToString());
     await container.CreateItemAsync(new
     {

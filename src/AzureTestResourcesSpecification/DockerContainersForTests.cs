@@ -49,7 +49,7 @@ public static class DockerContainersForTests
     var container = new ContainerBuilder()
         .WithLogger(new NUnitLogger("lol")) //bug
         .WithImage("ghcr.io/pikami/cosmium")
-        .WithPortBinding(8081, 8081) //bug cleanup!!!
+        .WithPortBinding(8081, assignRandomHostPort: true) //bug cleanup!!!
         //.WithEnvironment("COSMIUM_DISABLEAUTH", "true")
         //.WithEnvironment("COSMIUM_PERSIST", "/save.json")
         //.WithBindMount("./save.json", "/save.json")

@@ -1,20 +1,20 @@
 ﻿using Azure.Messaging.ServiceBus;
+using DotNet.Testcontainers.Containers;
 using Extensions.Logging.NUnit;
 using FluentAssertions;
 using TddXt.AzureTestResources.Messaging.ServiceBus;
-using Testcontainers.ServiceBus;
 
 namespace TddXt.AzureTestResourcesSpecification;
 
 public class AzureServiceBusTopicsSpecification
 {
   // will not work yet, because the emulator does not support admin sdk
-  private ServiceBusContainer _container;
+  private IContainer _container;
 
   [OneTimeSetUp]
   public async Task SetUpEmulator()
   {
-    _container = await DockerContainersForTests.StartServiceBusContainer();
+    _container = await DockerContainersForTests.StartServiceBusContainer2();
   }
 
   [OneTimeTearDown]
@@ -61,8 +61,9 @@ public class AzureServiceBusTopicsSpecification
     //GIVEN
     var ct = new CancellationTokenSource().Token;
 
+
     await using var topic = await ServiceBusTestResources.CreateTopic(
-      _container.GetConnectionString(),
+      "Endpoint=sb://default.default.default.localhost.localsandbox.sh:5672;SharedAccessKeyName=1234;SharedAccessKey=password;UseDevelopmentEmulator=true",
       "testTopic",
       new NUnitLogger("servicebus"),
       ct);

@@ -9,6 +9,10 @@ namespace TddXt.AzureTestResourcesSpecification;
 
 public static class DockerContainersForTests
 {
+  /// <summary>
+  /// Won't work, the service bus mock does not yet support the admin client API :-(
+  /// </summary>
+  /// <returns></returns>
   public static async Task<ServiceBusContainer> StartServiceBusContainer()
   {
     var container = new ServiceBusBuilder()
@@ -19,7 +23,11 @@ public static class DockerContainersForTests
     return container;
   }
 
-  public static async Task<IContainer> StartServiceBusContainer2() //bug name
+  /// <summary>
+  /// Won't work, the localsandbox cannot be used with ServiceBusAdministrationClient yet :-(
+  /// </summary>
+  /// <returns></returns>
+  public static async Task<IContainer> StartServiceBusContainer2()
   {
     var container = new ContainerBuilder().WithImage("localsandbox/localsandbox")
         .WithName("localsandbox")
